@@ -1,7 +1,8 @@
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
-import DefaultLayout from "@/layouts/default";
+import { siteConfig } from "@app/config/site";
+
+import { title, subtitle } from "@/ui/primitives";
+import { GithubIcon } from "@/ui/icons";
+import DefaultLayout from "@/ui/layouts/default";
 
 export default function IndexPage() {
   return (

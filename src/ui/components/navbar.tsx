@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button, Kbd, Link, TextField, InputGroup } from "@heroui/react";
 import clsx from "clsx";
+import { siteConfig } from "@app/config/site";
+import { ThemeSwitch } from "@components/theme-switch";
 
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
 import {
   TwitterIcon,
   GithubIcon,
@@ -13,7 +13,7 @@ import {
   HeartFilledIcon,
   SearchIcon,
   Logo,
-} from "@/components/icons";
+} from "@/ui/icons";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
