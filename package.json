@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "echo its a teste",
+    "prepare": "husky"
   },
   "dependencies": {
     "@heroui/react": "3.2.2",
@@ -39,6 +41,7 @@
     "eslint-plugin-react-hooks": "5.2.0",
     "eslint-plugin-unused-imports": "4.1.4",
     "globals": "16.0.0",
+    "husky": "^9.1.7",
     "postcss": "8.5.15",
     "prettier": "3.5.3",
     "tailwind-variants": "3.2.2",
