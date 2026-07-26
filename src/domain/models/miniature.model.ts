@@ -9,7 +9,6 @@ export interface CreateMiniature {
   scale: string;
   images: Image[];
   quantity: number;
-  favorite: boolean;
   acquiredAt?: Date;
 }
 
