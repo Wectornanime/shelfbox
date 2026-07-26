@@ -1,7 +1,7 @@
+import Miniature from "@/domain/entities/Miniature";
 import Image from "@/domain/value-objects/Image";
 
-export default interface Miniature {
-  id: string; // uuid
+export interface CreateMiniatureDto {
   collectionId: string;
   name: string;
   description?: string;
@@ -11,6 +11,9 @@ export default interface Miniature {
   quantity: number;
   favorite: boolean;
   acquiredAt?: Date;
-  createdAt: Date;
-  updatedAt: Date;
+}
+
+export interface UpdateMiniatureDto {
+  id: string;
+  data: Partial<Omit<Miniature, "id" | "createdAt" | "updatedAt">>;
 }
