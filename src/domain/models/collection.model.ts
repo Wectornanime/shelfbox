@@ -1,12 +1,12 @@
 import Collection from "@/domain/entities/Collection";
 
-export interface CreateCollectionDto {
+export interface CreateCollection {
   name: string;
   icon?: string;
   description?: string;
 }
 
-export interface UpdateCollectionDto {
+export interface UpdateCollection {
   id: string;
   data: Partial<Omit<Collection, "id" | "createdAt" | "updatedAt">>;
 }

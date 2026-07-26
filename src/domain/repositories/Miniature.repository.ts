@@ -1,14 +1,14 @@
 import Miniature from "@/domain/entities/Miniature";
 import {
-  CreateMiniatureDto,
-  UpdateMiniatureDto,
-} from "@/domain/dtos/miniature.dto";
+  CreateMiniature,
+  UpdateMiniature,
+} from "@/domain/models/miniature.model";
 
 export default interface MiniatureRepository {
-  create(miniature: CreateMiniatureDto): Promise<void>;
+  create(miniature: CreateMiniature): Promise<void>;
   findAll(): Promise<Miniature[]>;
   findById(id: string): Promise<Miniature | null>;
-  update(miniature: UpdateMiniatureDto): Promise<void>;
+  update(miniature: UpdateMiniature): Promise<void>;
   delete(id: string): Promise<void>;
 
   findByCollectionId(collectionId: string): Promise<Miniature[]>;

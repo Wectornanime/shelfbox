@@ -1,7 +1,7 @@
 import Miniature from "@/domain/entities/Miniature";
 import Image from "@/domain/value-objects/Image";
 
-export interface CreateMiniatureDto {
+export interface CreateMiniature {
   collectionId: string;
   name: string;
   description?: string;
@@ -13,7 +13,7 @@ export interface CreateMiniatureDto {
   acquiredAt?: Date;
 }
 
-export interface UpdateMiniatureDto {
+export interface UpdateMiniature {
   id: string;
   data: Partial<Omit<Miniature, "id" | "createdAt" | "updatedAt">>;
 }
