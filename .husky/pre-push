@@ -1,0 +1,13 @@
+. "$(dirname -- "$0")/_/husky.sh"
+
+branch="$(git symbolic-ref --short HEAD)"
+
+case "$branch" in
+  feature/*)
+    exit 0
+    ;;
+  *)
+    echo "Erro: PUSH BLOQUEADO! Você só pode enviar alterações de branches do tipo feature/."
+    exit 1
+    ;;
+esac
