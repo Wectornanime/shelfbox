@@ -13,6 +13,14 @@ export default class UpdateCollectionCase {
 
     if (!collection) throw new Error("Collection not found.");
 
+    if (data.name !== undefined) {
+      const name = data.name.trim();
+
+      if (!name) {
+        throw new Error("The collection name is required.");
+      }
+    }
+
     // create entity
     const updatedCollection: Collection = {
       ...collection,
