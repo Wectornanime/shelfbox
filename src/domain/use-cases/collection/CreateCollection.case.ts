@@ -1,13 +1,9 @@
 import Collection from "@/domain/entities/Collection";
 import { CreateCollection } from "@/domain/models/collection.model";
 import CollectionRepository from "@/domain/repositories/collection.repository";
-import MiniatureRepository from "@/domain/repositories/miniature.repository";
 
 export default class CreateCollectionCase {
-  constructor(
-    private readonly miniatureRepository: MiniatureRepository,
-    private readonly repository: CollectionRepository,
-  ) {}
+  constructor(private readonly repository: CollectionRepository) {}
 
   async execute(data: CreateCollection): Promise<Collection> {
     // validation
