@@ -1,6 +1,6 @@
 import MiniatureRepository from "@/domain/repositories/miniature.repository";
 
-export default class UpdateMiniatureCase {
+export default class DeleteMiniatureCase {
   constructor(private readonly repository: MiniatureRepository) {}
 
   async execute(id: string): Promise<void> {
