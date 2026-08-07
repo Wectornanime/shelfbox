@@ -1,11 +1,19 @@
 branch="$(git symbolic-ref --short HEAD)"
 
 case "$branch" in
-  feature/*)
+  feature/*|fix/*|refactor/*|chore/*|docs/*|test/*)
     exit 0
     ;;
   *)
-    echo "Erro: PUSH BLOQUEADO! Você só pode enviar alterações de branches do tipo feature/."
+    echo "Erro: PUSH BLOQUEADO!"
+    echo "Você só pode enviar alterações de branches de desenvolvimento."
+    echo "Use:
+ - feature/*
+ - fix/*
+ - refactor/*
+ - chore/*
+ - docs/*
+ - test/*"
     exit 1
     ;;
 esac
