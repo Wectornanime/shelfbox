@@ -12,6 +12,7 @@
     "build": "tsc && vite build",
     "lint": "eslint --fix",
     "preview": "vite preview",
+    "test": "jest --passWithNoTests",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },
