@@ -1,7 +1,7 @@
 import Collection from "@/domain/entities/Collection";
 import CollectionRepository from "@/domain/repositories/collection.repository";
 
-export default class GetCollectionCase {
+export default class GetCollectionByIdCase {
   constructor(private readonly repository: CollectionRepository) {}
 
   async execute(id: string): Promise<Collection | null> {
