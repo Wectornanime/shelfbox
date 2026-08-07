@@ -1,1 +1,1 @@
-export { default as dexieDatabase } from "./dexie/instance";
+export { default as dexieDatabase } from "./dexie/database";
