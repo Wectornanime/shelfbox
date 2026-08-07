@@ -1,5 +1,5 @@
 import Miniature from "@/domain/entities/Miniature";
-import MiniatureRepository from "@/domain/repositories/Miniature.repository";
+import MiniatureRepository from "@/domain/repositories/miniature.repository";
 import { dexieDatabase } from "@/infrastructure/database";
 
 export default class DexieMiniatureRepository implements MiniatureRepository {
