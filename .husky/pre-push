@@ -1,11 +1,34 @@
 branch="$(git symbolic-ref --short HEAD)"
 
 case "$branch" in
-  feature/*)
-    exit 0
+  feature/*|fix/*|refactor/*|chore/*|docs/*|test/*)
     ;;
   *)
-    echo "Erro: PUSH BLOQUEADO! Você só pode enviar alterações de branches do tipo feature/."
+    echo "Erro: PUSH BLOQUEADO!"
+    echo "Você só pode enviar alterações de branches de desenvolvimento."
+    echo "Use:"
+    echo " - feature/*"
+    echo " - fix/*"
+    echo " - refactor/*"
+    echo " - chore/*"
+    echo " - docs/*"
+    echo " - test/*"
     exit 1
     ;;
 esac
+
+echo "Executando TypeScript..."
+npm run typecheck
+
+if [ $? -ne 0 ]; then
+  echo "Erro: TypeScript encontrou problemas!"
+  exit 1
+fi
+
+echo "Executando testes..."
+npm test
+
+if [ $? -ne 0 ]; then
+  echo "Erro: testes falharam!"
+  exit 1
+fi
