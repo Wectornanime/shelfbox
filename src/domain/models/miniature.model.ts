@@ -7,8 +7,8 @@ export interface CreateMiniature {
   description?: string;
   brand: string;
   scale: string;
-  images: Image[];
-  quantity: number;
+  images?: Image[];
+  quantity?: number;
   acquiredAt?: Date;
 }
 
