@@ -4,8 +4,12 @@ import MiniatureRepository from "@/domain/repositories/miniature.repository";
 import CollectionRepository from "@/domain/repositories/collection.repository";
 
 describe("CreateMiniatureCase", () => {
-  it("should create a miniature", async () => {
-    const miniatureRepository: jest.Mocked<MiniatureRepository> = {
+  let miniatureRepository: jest.Mocked<MiniatureRepository>;
+  let collectionRepository: jest.Mocked<CollectionRepository>;
+  let useCase: CreateMiniatureCase;
+
+  beforeEach(() => {
+    miniatureRepository = {
       create: jest.fn(),
       findAll: jest.fn(),
       findById: jest.fn(),
@@ -14,7 +18,7 @@ describe("CreateMiniatureCase", () => {
       findByCollectionId: jest.fn(),
     };
 
-    const collectionRepository: jest.Mocked<CollectionRepository> = {
+    collectionRepository = {
       create: jest.fn(),
       findAll: jest.fn(),
       findById: jest.fn(),
@@ -22,17 +26,19 @@ describe("CreateMiniatureCase", () => {
       delete: jest.fn(),
     };
 
+    useCase = new CreateMiniatureCase(
+      miniatureRepository,
+      collectionRepository,
+    );
+  });
+
+  it("should create a miniature", async () => {
     collectionRepository.findById.mockResolvedValue({
       id: "collection-1",
       name: "Hot Wheels",
       createdAt: new Date(),
       updatedAt: new Date(),
     });
-
-    const useCase = new CreateMiniatureCase(
-      miniatureRepository,
-      collectionRepository,
-    );
 
     const miniature = await useCase.execute({
       collectionId: "collection-1",
