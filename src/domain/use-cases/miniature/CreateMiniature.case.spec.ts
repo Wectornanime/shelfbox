@@ -32,6 +32,144 @@ describe("CreateMiniatureCase", () => {
     );
   });
 
+  it("should reject a miniature without a name", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "",
+      brand: "Hot Wheels",
+      scale: "1:64",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature name is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the name is an empty string", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: " ",
+      brand: "Hot Wheels",
+      scale: "1:64",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature name is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature without a brand", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Hot Wheels",
+      brand: "",
+      scale: "1:64",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature brand is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the brand is an empty string", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Hot Wheels",
+      brand: " ",
+      scale: "1:64",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature brand is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature without a scale", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Hot Wheels",
+      brand: "Hot Wheels",
+      scale: "",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature scale is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the scale is an empty string", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Hot Wheels",
+      brand: "Hot Wheels",
+      scale: " ",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature scale is required.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the scale is not valid", async () => {
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Hot Wheels",
+      brand: "Hot Wheels",
+      scale: "00",
+    });
+
+    await expect(miniature).rejects.toThrow("The miniature scale is invalid.");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature without a collectionId", async () => {
+    const miniature = useCase.execute({
+      collectionId: "",
+      name: "Hot Wheels",
+      brand: "Hot Wheels",
+      scale: "1/64",
+    });
+
+    await expect(miniature).rejects.toThrow(
+      "The miniature collection is required.",
+    );
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the collectionId is an empty string", async () => {
+    const miniature = useCase.execute({
+      collectionId: " ",
+      name: "Hot Wheels",
+      brand: "Hot Wheels",
+      scale: "1/64",
+    });
+
+    await expect(miniature).rejects.toThrow(
+      "The miniature collection is required.",
+    );
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
+  it("should reject a miniature when the collection does not exist", async () => {
+    collectionRepository.findById.mockResolvedValue(null);
+
+    const miniature = useCase.execute({
+      collectionId: "collection-1",
+      name: "Batmobile",
+      brand: "Hot Wheels",
+      scale: "1:64",
+    });
+
+    await expect(miniature).rejects.toThrow("Collection not found.");
+
+    expect(collectionRepository.findById).toHaveBeenCalledWith("collection-1");
+
+    expect(miniatureRepository.create).not.toHaveBeenCalled();
+  });
+
   it("should create a miniature", async () => {
     collectionRepository.findById.mockResolvedValue({
       id: "collection-1",
