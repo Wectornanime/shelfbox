@@ -9,6 +9,18 @@ export default class CreateCollectionCase {
     // validation
     if (!data.name.trim()) throw new Error("The collection name is required.");
 
+    if (data.description !== undefined) {
+      if (!data.description.trim()) {
+        throw new Error("The collection description is invalid.");
+      }
+    }
+
+    if (data.icon !== undefined) {
+      if (!data.icon.trim()) {
+        throw new Error("The collection icon is invalid.");
+      }
+    }
+
     // create entity
     const collection: Collection = {
       id: crypto.randomUUID(),
