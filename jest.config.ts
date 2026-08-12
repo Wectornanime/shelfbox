@@ -17,6 +17,10 @@ const config: Config = {
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
 
   clearMocks: true,
+
+  collectCoverage: true,
+
+  collectCoverageFrom: ["src/**/*.case.ts", "!src/**/*.d.ts"],
 };
 
 export default config;
