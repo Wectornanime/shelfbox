@@ -15,6 +15,7 @@
     "lint:fix": "eslint --fix",
     "preview": "vite preview",
     "test": "jest --passWithNoTests",
+    "test:coverage": "jest --coverage --passWithNoTests",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },

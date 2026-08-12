@@ -5,7 +5,7 @@ export default class GetCollectionByIdCase {
   constructor(private readonly repository: CollectionRepository) {}
 
   async execute(id: string): Promise<Collection | null> {
-    if (!id.trim()) throw new Error("The Collection id is required.");
+    if (!id.trim()) throw new Error("The collection id is required.");
 
     return this.repository.findById(id);
   }
