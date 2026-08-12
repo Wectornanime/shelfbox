@@ -4,7 +4,7 @@ export default class DeleteCollectionCase {
   constructor(private readonly repository: CollectionRepository) {}
 
   async execute(id: string): Promise<void> {
-    if (!id.trim()) throw new Error("The Collection id is required.");
+    if (!id.trim()) throw new Error("The collection id is required.");
 
     const Collection = await this.repository.findById(id.trim());
 
