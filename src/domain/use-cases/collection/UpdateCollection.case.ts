@@ -21,6 +21,18 @@ export default class UpdateCollectionCase {
       }
     }
 
+    if (data.description !== undefined) {
+      if (!data.description.trim()) {
+        throw new Error("The collection description is invalid.");
+      }
+    }
+
+    if (data.icon !== undefined) {
+      if (!data.icon.trim()) {
+        throw new Error("The collection icon is invalid.");
+      }
+    }
+
     // create entity
     const updatedCollection: Collection = {
       ...collection,
