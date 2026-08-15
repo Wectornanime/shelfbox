@@ -1,2 +1,2 @@
-export { default as DexieCollectionRepository } from "./Collection.repository";
-export { default as DexieMiniatureRepository } from "./Miniature.repository";
+export { default as DexieCollectionRepository } from "./DexieCollection.repository";
+export { default as DexieMiniatureRepository } from "./DexieMiniature.repository";
