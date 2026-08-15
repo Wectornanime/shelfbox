@@ -21,6 +21,8 @@ const config: Config = {
   collectCoverage: true,
 
   collectCoverageFrom: ["src/**/*.case.ts", "!src/**/*.d.ts"],
+
+  setupFiles: ["<rootDir>/jestSetup.ts"],
 };
 
 export default config;
