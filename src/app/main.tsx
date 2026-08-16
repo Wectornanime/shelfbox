@@ -5,7 +5,9 @@ import { registerSW } from "virtual:pwa-register";
 
 import App from "./App.tsx";
 import { Provider } from "./provider.tsx";
+
 import "@/styles/globals.css";
+import MobileLayout from "@/ui/layouts/mobileLayout.tsx";
 
 if ("serviceWorker" in navigator) {
   const updateSW = registerSW({
@@ -41,7 +43,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider>
-        <App />
+        <MobileLayout>
+          <App />
+        </MobileLayout>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,
