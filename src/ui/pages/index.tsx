@@ -1,7 +1,6 @@
 import { Link, SearchField } from "@heroui/react";
 
-import CollectionCard from "../components/collections/collectionCard";
-
+import CollectionCard from "@/ui/components/collections/collectionCard";
 import { PlusCircleIcon } from "@/ui/icons";
 import PageHeader from "@/ui/components/pageHeader";
 import useCollections from "@/ui/hooks/collections/useCollections";

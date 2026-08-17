@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { listCollectionCase } from "@/app/composition/collection";
+import {
+  createCollectionCase,
+  listCollectionCase,
+} from "@/app/composition/collection";
 import Collection from "@/domain/entities/Collection";
+import { CreateCollection } from "@/domain/models/collection.model";
 
 export default function useCollections() {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -27,6 +31,27 @@ export default function useCollections() {
     }
   }, []);
 
+  const createCollection = useCallback(async (data: CreateCollection) => {
+    try {
+      setError(null);
+
+      const collection = await createCollectionCase.execute(data);
+
+      setCollections((current) => [...current, collection]);
+
+      return collection;
+    } catch (error) {
+      const normalizedError =
+        error instanceof Error
+          ? error
+          : new Error("Failed to create collection.");
+
+      setError(normalizedError);
+
+      throw normalizedError;
+    }
+  }, []);
+
   useEffect(() => {
     loadCollections();
   }, [loadCollections]);
@@ -36,5 +61,6 @@ export default function useCollections() {
     loading,
     error,
     reload: loadCollections,
+    createCollection,
   };
 }
