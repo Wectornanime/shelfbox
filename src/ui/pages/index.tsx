@@ -1,4 +1,5 @@
-import { Link, SearchField } from "@heroui/react";
+import { SearchField } from "@heroui/react";
+import { Link } from "react-router-dom";
 
 import CollectionCard from "@/ui/components/collections/collectionCard";
 import { PlusCircleIcon } from "@/ui/icons";
@@ -12,7 +13,7 @@ export default function IndexPage() {
     <>
       <PageHeader
         right={
-          <Link href="/collections/new">
+          <Link to="/collections/new">
             <PlusCircleIcon />
           </Link>
         }

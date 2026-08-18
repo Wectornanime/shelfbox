@@ -1,5 +1,5 @@
-import { Link, Button, Input, TextField, Label, TextArea } from "@heroui/react";
-import { useNavigate } from "react-router-dom";
+import { Button, Input, TextField, Label, TextArea } from "@heroui/react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import PageHeader from "@/ui/components/pageHeader";
@@ -42,7 +42,7 @@ export default function CreateCollectionPage() {
     <>
       <PageHeader
         left={
-          <Link href="/">
+          <Link to="/">
             <BackIcon />
           </Link>
         }
