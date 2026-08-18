@@ -8,7 +8,7 @@ interface MiniatureCardProps {
 
 export default function MiniatureCard({ id, title }: MiniatureCardProps) {
   return (
-    <Link to={`/collections/${id}`}>
+    <Link to={`miniatures/${id}`}>
       <Card className="flex w-24 gap-2 p-0 rounded-md">
         <img
           alt="Indie Hackers community"
