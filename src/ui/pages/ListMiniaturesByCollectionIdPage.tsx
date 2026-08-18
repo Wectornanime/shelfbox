@@ -1,6 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import { SearchField } from "@heroui/react";
 
+import MiniatureCard from "../components/miniatureCard";
+
 import PageHeader from "@/ui/components/pageHeader";
 import { BackIcon, PlusCircleIcon } from "@/ui/icons";
 import useMiniaturesByCollection from "@/ui/hooks/miniatures/useMiniaturesByCollection";
@@ -44,7 +46,11 @@ export default function ListMiniaturesByCollectionIdPage() {
             <p>Nenhuma miniatura cadastrada.</p>
           ) : (
             miniatures.map((miniature) => (
-              <div key={miniature.id}>{miniature.name}</div>
+              <MiniatureCard
+                key={miniature.id}
+                id={miniature.id}
+                title={miniature.name}
+              />
             ))
           )}
         </section>
