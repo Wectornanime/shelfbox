@@ -1,12 +1,12 @@
 import { Card, CardHeader, CardTitle } from "@heroui/react";
 import { Link } from "react-router-dom";
 
-interface CollectionCardProps {
-  title: string;
+interface MiniatureCardProps {
   id: string;
+  title: string;
 }
 
-export default function CollectionCard({ title, id }: CollectionCardProps) {
+export default function MiniatureCard({ id, title }: MiniatureCardProps) {
   return (
     <Link to={`/collections/${id}`}>
       <Card className="flex w-24 gap-2 p-0 rounded-md">

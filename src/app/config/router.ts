@@ -20,9 +20,9 @@ export const routes = {
   external: {
     "/": IndexPage,
     "/collections/new": CreateCollectionPage,
-    "/collections/collectionId": ListMiniaturesByCollectionIdPage,
-    "/collections/collectionId/miniatures/new": CreateMiniaturePage,
-    "/collections/collectionId/miniatures/miniatureId": MiniatureDetailsPage,
+    "/collections/:collectionId": ListMiniaturesByCollectionIdPage,
+    "/collections/:collectionId/miniatures/new": CreateMiniaturePage,
+    "/collections/:collectionId/miniatures/:miniatureId": MiniatureDetailsPage,
   },
 
   internal: {},
