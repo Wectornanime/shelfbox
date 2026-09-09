@@ -33,7 +33,7 @@ export default function MiniatureDetailsPage() {
             <CheckCircleIcon />
           </Button>
         }
-        title="Miniatura"
+        title={miniature?.name ?? "Miniatura"}
       />
 
       {loading ? (

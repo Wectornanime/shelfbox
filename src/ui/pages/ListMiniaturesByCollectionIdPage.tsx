@@ -1,5 +1,6 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { SearchField } from "@heroui/react";
+import Fab from "@components/fab";
 
 import MiniatureCard from "../components/miniatureCard";
 
@@ -8,6 +9,7 @@ import { BackIcon, PlusCircleIcon } from "@/ui/icons";
 import useMiniaturesByCollection from "@/ui/hooks/miniatures/useMiniaturesByCollection";
 
 export default function ListMiniaturesByCollectionIdPage() {
+  const navigate = useNavigate();
   const { collectionId } = useParams<{ collectionId: string }>();
   const { miniatures, loading, error } =
     useMiniaturesByCollection(collectionId);
@@ -55,6 +57,12 @@ export default function ListMiniaturesByCollectionIdPage() {
           )}
         </section>
       </section>
+
+      <Fab
+        icon={<PlusCircleIcon />}
+        label="Adicionar"
+        onClick={() => navigate(`/collections/${collectionId}/miniatures/new`)}
+      />
     </>
   );
 }

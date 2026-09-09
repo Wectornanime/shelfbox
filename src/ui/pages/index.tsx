@@ -1,5 +1,6 @@
 import { SearchField } from "@heroui/react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Fab from "@components/fab";
 
 import CollectionCard from "@/ui/components/collections/collectionCard";
 import { PlusCircleIcon } from "@/ui/icons";
@@ -7,18 +8,12 @@ import PageHeader from "@/ui/components/pageHeader";
 import useCollections from "@/ui/hooks/collections/useCollections";
 
 export default function IndexPage() {
+  const navigate = useNavigate();
   const { collections, loading, error } = useCollections();
 
   return (
     <>
-      <PageHeader
-        right={
-          <Link to="/collections/new">
-            <PlusCircleIcon />
-          </Link>
-        }
-        title="ShelfBox"
-      />
+      <PageHeader title="ShelfBox" />
 
       <SearchField name="search">
         <SearchField.Group>
@@ -41,6 +36,12 @@ export default function IndexPage() {
           ))
         )}
       </section>
+
+      <Fab
+        icon={<PlusCircleIcon />}
+        label="Adicionar"
+        onClick={() => navigate("/collections/new")}
+      />
     </>
   );
 }
