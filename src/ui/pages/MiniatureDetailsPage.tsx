@@ -1,12 +1,11 @@
 import { Button } from "@heroui/react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import PageHeader from "@/ui/components/pageHeader";
 import { BackIcon, CheckCircleIcon } from "@/ui/icons";
 import useMiniature from "@/ui/hooks/miniatures/useMiniature";
 
 export default function MiniatureDetailsPage() {
-  const navigate = useNavigate();
   const { collectionId, miniatureId } = useParams<{
     collectionId: string;
     miniatureId: string;
