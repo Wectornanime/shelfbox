@@ -1,8 +1,13 @@
 import type { ReactNode } from "react";
 
-import { Button, Tooltip, TooltipContent } from "@heroui/react";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  ButtonProps as HeroUiButtonProps,
+} from "@heroui/react";
 
-interface FabProps {
+interface FabProps extends HeroUiButtonProps {
   icon: ReactNode;
   label: string;
   onClick?: () => void;
@@ -20,6 +25,7 @@ export default function Fab({
   variant = "primary",
   disabled = false,
   className = "",
+  ...rest
 }: FabProps) {
   return (
     <Tooltip>
@@ -43,6 +49,7 @@ export default function Fab({
         size={size}
         variant={variant}
         onPress={onClick}
+        {...rest}
       >
         {icon}
       </Button>
