@@ -91,9 +91,11 @@ export default function CollectionEditPage() {
 
       await deleteCollection(collectionId);
 
-      navigate("/collections");
+      navigate("/");
     } catch (error) {
-      setError("Failed to delete collection");
+      setError(
+        error instanceof Error ? error.message : "Failed to delete collection.",
+      );
     }
   }
 

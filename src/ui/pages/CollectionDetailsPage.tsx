@@ -24,14 +24,14 @@ export default function CollectionDetailsPage() {
       />
 
       {loading ? (
-        <p>Carregando miniatura...</p>
+        <p>Carregando coleção...</p>
       ) : error ? (
         <p>{error}</p>
       ) : collection ? (
         <section>
           <h1>{collection.name}</h1>
 
-          <p>Marca: {collection.description}</p>
+          <p>Descrição: {collection.description}</p>
         </section>
       ) : null}
 
