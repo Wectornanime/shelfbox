@@ -6,6 +6,8 @@ import MiniatureDetailsPage from "@pages/MiniatureDetailsPage";
 import NotFoundPage from "@pages/NotFound";
 import { ComponentType } from "react";
 
+import CollectionDetailsPage from "@/ui/pages/CollectionDetailsPage";
+
 export interface RouteConfig {
   [path: string]: ComponentType;
 }
@@ -21,6 +23,7 @@ export const routes = {
     "/": IndexPage,
     "/collections/new": CreateCollectionPage,
     "/collections/:collectionId": ListMiniaturesByCollectionIdPage,
+    "/collections/:collectionId/info": CollectionDetailsPage,
     "/collections/:collectionId/miniatures/new": CreateMiniaturePage,
     "/collections/:collectionId/miniatures/:miniatureId": MiniatureDetailsPage,
   },

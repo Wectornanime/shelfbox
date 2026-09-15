@@ -13,5 +13,7 @@ export {
   ArrowLeftIcon as BackIcon,
   CheckCircleIcon,
   HomeIcon,
+  InfoIcon,
+  PencilIcon as EditIcon,
   PlusCircleIcon,
 } from "lucide-react";

@@ -1,8 +1,9 @@
-import { Button, Input, TextField, Label, TextArea } from "@heroui/react";
+import { Input, TextField, Label, TextArea } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import PageHeader from "@/ui/components/pageHeader";
+import Fab from "@/ui/components/fab";
 import { BackIcon, CheckCircleIcon } from "@/ui/icons";
 import useCollections from "@/ui/hooks/collections/useCollections";
 
@@ -46,18 +47,6 @@ export default function CreateCollectionPage() {
             <BackIcon />
           </Link>
         }
-        right={
-          <Button
-            isIconOnly
-            aria-label="Criar coleção"
-            form="create-collection-form"
-            isDisabled={loading}
-            type="submit"
-            variant="ghost"
-          >
-            <CheckCircleIcon />
-          </Button>
-        }
         title="Nova Coleção"
       />
 
@@ -92,6 +81,15 @@ export default function CreateCollectionPage() {
 
           {error && <p role="alert">{error}</p>}
         </form>
+
+        <Fab
+          form="create-collection-form"
+          icon={<CheckCircleIcon />}
+          isDisabled={loading}
+          label="Criar coleção"
+          type="submit"
+          onClick={() => navigate("/collections/new")}
+        />
       </main>
     </>
   );
