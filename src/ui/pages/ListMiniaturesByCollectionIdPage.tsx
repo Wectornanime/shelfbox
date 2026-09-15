@@ -5,7 +5,7 @@ import Fab from "@components/fab";
 import MiniatureCard from "../components/miniatureCard";
 
 import PageHeader from "@/ui/components/pageHeader";
-import { BackIcon, PlusCircleIcon } from "@/ui/icons";
+import { BackIcon, InfoIcon, PlusCircleIcon } from "@/ui/icons";
 import useMiniaturesByCollection from "@/ui/hooks/miniatures/useMiniaturesByCollection";
 
 export default function ListMiniaturesByCollectionIdPage() {
@@ -23,8 +23,8 @@ export default function ListMiniaturesByCollectionIdPage() {
           </Link>
         }
         right={
-          <Link to={`/collections/${collectionId}/miniatures/new`}>
-            <PlusCircleIcon />
+          <Link to={`info`}>
+            <InfoIcon />
           </Link>
         }
         title="ShelfBox"

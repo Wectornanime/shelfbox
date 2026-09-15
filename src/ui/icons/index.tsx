@@ -16,4 +16,6 @@ export {
   InfoIcon,
   PencilIcon as EditIcon,
   PlusCircleIcon,
+  SaveIcon,
+  TrashIcon,
 } from "lucide-react";
