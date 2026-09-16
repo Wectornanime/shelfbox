@@ -88,7 +88,6 @@ export default function CreateCollectionPage() {
           isDisabled={loading}
           label="Criar coleção"
           type="submit"
-          onClick={() => navigate("/collections/new")}
         />
       </main>
     </>

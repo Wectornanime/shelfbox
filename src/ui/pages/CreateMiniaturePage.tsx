@@ -1,8 +1,9 @@
-import { Button, Input, TextField, Label } from "@heroui/react";
+import { Input, TextField, Label } from "@heroui/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
 import PageHeader from "@/ui/components/pageHeader";
+import Fab from "@/ui/components/fab";
 import { BackIcon, CheckCircleIcon } from "@/ui/icons";
 import useMiniatures from "@/ui/hooks/miniatures/useMiniatures";
 
@@ -46,18 +47,6 @@ export default function CreateMiniaturePage() {
             <BackIcon />
           </Link>
         }
-        right={
-          <Button
-            isIconOnly
-            aria-label="Criar miniatura"
-            form="create-miniature-form"
-            isDisabled={loading}
-            type="submit"
-            variant="ghost"
-          >
-            <CheckCircleIcon />
-          </Button>
-        }
         title="Nova Miniatura"
       />
 
@@ -85,6 +74,14 @@ export default function CreateMiniaturePage() {
           {error && <p role="alert">{error}</p>}
         </form>
       </main>
+
+      <Fab
+        form="create-miniature-form"
+        icon={<CheckCircleIcon />}
+        isDisabled={loading}
+        label="Criar miniatura"
+        type="submit"
+      />
     </>
   );
 }
