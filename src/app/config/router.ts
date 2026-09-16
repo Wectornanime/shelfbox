@@ -5,9 +5,9 @@ import ListMiniaturesByCollectionIdPage from "@pages/ListMiniaturesByCollectionI
 import MiniatureDetailsPage from "@pages/MiniatureDetailsPage";
 import NotFoundPage from "@pages/NotFound";
 import { ComponentType } from "react";
-
-import CollectionDetailsPage from "@/ui/pages/CollectionDetailsPage";
-import CollectionEditPage from "@/ui/pages/CollectionEditPage";
+import CollectionDetailsPage from "@pages/CollectionDetailsPage";
+import CollectionEditPage from "@pages/CollectionEditPage";
+import MiniatureEditPage from "@pages/MiniatureEditPage";
 
 export interface RouteConfig {
   [path: string]: ComponentType;
@@ -28,6 +28,8 @@ export const routes = {
     "/collections/:collectionId/info": CollectionDetailsPage,
     "/collections/:collectionId/miniatures/new": CreateMiniaturePage,
     "/collections/:collectionId/miniatures/:miniatureId": MiniatureDetailsPage,
+    "/collections/:collectionId/miniatures/:miniatureId/edit":
+      MiniatureEditPage,
   },
 
   internal: {},
