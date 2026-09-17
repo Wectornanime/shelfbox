@@ -8,6 +8,13 @@ import Miniature from "@/domain/entities/Miniature";
 export default class ShelfBoxDatabase extends Dexie {
   collections!: Table<Collection, string>;
   miniatures!: Table<Miniature, string>;
+  images!: Table<
+    {
+      path: string;
+      blob: Blob;
+    },
+    string
+  >;
 
   constructor() {
     super(DATABASE_NAME);
