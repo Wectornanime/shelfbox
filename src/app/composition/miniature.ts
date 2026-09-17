@@ -14,7 +14,7 @@ import {
 const miniatureRepository = new DexieMiniatureRepository();
 const collectionRepository = new DexieCollectionRepository();
 
-export const createCollectionCase = new CreateMiniatureCase(
+export const createMiniatureCase = new CreateMiniatureCase(
   miniatureRepository,
   collectionRepository,
 );

@@ -9,4 +9,13 @@ export { SearchIcon } from "./SearchIcon";
 export { SunFilledIcon } from "./SunFilledIcon";
 export { TwitterIcon } from "./TwitterIcon";
 
-export { HomeIcon, PlusCircleIcon } from "lucide-react";
+export {
+  ArrowLeftIcon as BackIcon,
+  CheckCircleIcon,
+  HomeIcon,
+  InfoIcon,
+  PencilIcon as EditIcon,
+  PlusCircleIcon,
+  SaveIcon,
+  TrashIcon,
+} from "lucide-react";

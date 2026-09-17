@@ -1,5 +1,3 @@
-import MobileNavbar from "@/ui/components/mobileNavbar";
-
 export default function MobileLayout({
   children,
 }: {
@@ -8,7 +6,7 @@ export default function MobileLayout({
   return (
     <div className="flex flex-col gap-4 p-5">
       {children}
-      <MobileNavbar />
+      {/* <MobileNavbar /> */}
     </div>
   );
 }
