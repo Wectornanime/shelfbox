@@ -57,6 +57,7 @@ export default function CreateMiniaturePage() {
         name,
         brand,
         scale,
+        image: image ? image : undefined,
       });
 
       navigate(`/collections/${collectionId}`);

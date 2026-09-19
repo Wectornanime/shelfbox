@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import PageHeader from "@/ui/components/pageHeader";
+import ShelfBoxImage from "@/ui/components/shelfBoxImage";
 import Fab from "@/ui/components/fab";
 import { BackIcon, EditIcon } from "@/ui/icons";
 import useMiniature from "@/ui/hooks/miniatures/useMiniature";
@@ -31,6 +32,11 @@ export default function MiniatureDetailsPage() {
         <p>{error}</p>
       ) : miniature ? (
         <section>
+          <ShelfBoxImage
+            alt={miniature.images[0].alt}
+            path={miniature.images[0].path}
+          />
+
           <h1>{miniature.name}</h1>
 
           <p>Marca: {miniature.brand}</p>

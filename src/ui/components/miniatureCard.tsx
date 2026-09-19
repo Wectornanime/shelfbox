@@ -1,12 +1,12 @@
 import { Card, CardHeader, CardTitle } from "@heroui/react";
 import { Link } from "react-router-dom";
 
-import Image from "@/domain/value-objects/Image";
+import ImageViewModel from "@/domain/value-objects/ImageViewModel";
 
 interface MiniatureCardProps {
   id: string;
   title: string;
-  image: Image;
+  image: ImageViewModel;
 }
 
 export default function MiniatureCard({
@@ -21,7 +21,7 @@ export default function MiniatureCard({
           alt={image?.alt ?? "Miniature preview"}
           className="pointer-events-none aspect-square w-24 rounded-md object-cover select-none"
           loading="lazy"
-          src={image?.path ?? "/no-image-found-360x250.png"}
+          src={image?.url ?? "/no-image-found-360x250.png"}
         />
         <CardHeader className="px-2 pb-1">
           <CardTitle>{title}</CardTitle>
