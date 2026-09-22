@@ -6,6 +6,7 @@ import {
 } from "@/app/composition/collection";
 import Collection from "@/domain/entities/Collection";
 import { CreateCollection } from "@/domain/models/collection.model";
+import { imageService } from "@/app/composition/imageService";
 
 export default function useCollections() {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -31,26 +32,43 @@ export default function useCollections() {
     }
   }, []);
 
-  const createCollection = useCallback(async (data: CreateCollection) => {
-    try {
-      setError(null);
+  const createCollection = useCallback(
+    async (
+      data: CreateCollection & {
+        image?: File;
+      },
+    ) => {
+      try {
+        setError(null);
 
-      const collection = await createCollectionCase.execute(data);
+        if (data.image) {
+          const path = await imageService.save(data.image);
 
-      setCollections((current) => [...current, collection]);
+          data.icon = path;
+        }
 
-      return collection;
-    } catch (error) {
-      const normalizedError =
-        error instanceof Error
-          ? error
-          : new Error("Failed to create collection.");
+        const collection = await createCollectionCase.execute({
+          name: data.name,
+          description: data.description,
+          icon: data.icon,
+        });
 
-      setError(normalizedError);
+        setCollections((current) => [...current, collection]);
 
-      throw normalizedError;
-    }
-  }, []);
+        return collection;
+      } catch (error) {
+        const normalizedError =
+          error instanceof Error
+            ? error
+            : new Error("Failed to create collection.");
+
+        setError(normalizedError);
+
+        throw normalizedError;
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     loadCollections();
