@@ -32,7 +32,12 @@ export default function IndexPage() {
           <p>Nenhuma coleção cadastrada.</p>
         ) : (
           collections.map((item) => (
-            <CollectionCard key={item.id} id={item.id} title={item.name} />
+            <CollectionCard
+              key={item.id}
+              icon={item.icon}
+              id={item.id}
+              title={item.name}
+            />
           ))
         )}
       </section>
