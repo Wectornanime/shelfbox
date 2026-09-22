@@ -51,6 +51,7 @@ export default function ListMiniaturesByCollectionIdPage() {
               <MiniatureCard
                 key={miniature.id}
                 id={miniature.id}
+                image={miniature.images[0]}
                 title={miniature.name}
               />
             ))

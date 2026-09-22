@@ -6,4 +6,6 @@ export const DATABASE_SCHEMA = {
   collections: "id, name",
 
   miniatures: "id, collectionId, name, brand, favorite",
+
+  images: "path",
 } as const;

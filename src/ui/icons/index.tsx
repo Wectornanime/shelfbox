@@ -8,6 +8,7 @@ export { MoonFilledIcon } from "./MoonFilledIcon";
 export { SearchIcon } from "./SearchIcon";
 export { SunFilledIcon } from "./SunFilledIcon";
 export { TwitterIcon } from "./TwitterIcon";
+export { default as ExpandIcon } from "./ExpandIcon";
 
 export {
   ArrowLeftIcon as BackIcon,
