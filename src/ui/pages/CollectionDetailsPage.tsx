@@ -4,6 +4,7 @@ import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
 import { BackIcon, EditIcon } from "@/ui/icons";
 import useCollection from "@/ui/hooks/collections/useCollection";
+import ShelfBoxImage from "@/ui/components/shelfBoxImage";
 
 export default function CollectionDetailsPage() {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ export default function CollectionDetailsPage() {
         <p>{error}</p>
       ) : collection ? (
         <section>
+          <ShelfBoxImage path={collection.icon ?? ""} />
+
           <h1>{collection.name}</h1>
 
           <p>Descrição: {collection.description}</p>
