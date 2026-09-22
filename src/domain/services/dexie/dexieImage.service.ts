@@ -25,4 +25,8 @@ export default class DexieImageService {
 
     return URL.createObjectURL(blob);
   }
+
+  async delete(path: string): Promise<void> {
+    await this.imageStorageRepository.delete(path);
+  }
 }

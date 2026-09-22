@@ -105,6 +105,7 @@ export default function MiniatureEditPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!miniature) return;
 
     if (!miniatureId) {
       setError(new Error("Miniature id is required."));
@@ -119,6 +120,10 @@ export default function MiniatureEditPage() {
 
       if (image) {
         newImage = await imageService.save(image);
+
+        if (miniature.images[0]) {
+          await imageService.delete(miniature.images[0].path);
+        }
       }
 
       await updateMiniature({
