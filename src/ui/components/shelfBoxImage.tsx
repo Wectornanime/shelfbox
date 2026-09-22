@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { Card } from "@heroui/react";
 
 import Loading from "./loading";
@@ -6,11 +6,16 @@ import Loading from "./loading";
 import { imageService } from "@/app/composition/imageService";
 
 interface ShelfBoxImageProps {
-  alt?: string;
   path: string;
+  alt?: string;
+  onClick?: MouseEventHandler<HTMLDivElement> | undefined;
 }
 
-export default function ShelfBoxImage({ path, alt }: ShelfBoxImageProps) {
+export default function ShelfBoxImage({
+  path,
+  alt,
+  onClick,
+}: ShelfBoxImageProps) {
   const [url, setUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -38,7 +43,10 @@ export default function ShelfBoxImage({ path, alt }: ShelfBoxImageProps) {
   }, [path]);
 
   return (
-    <Card className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6">
+    <Card
+      className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
+      onClick={onClick}
+    >
       {isLoading ? (
         <Loading className="m-auto" size="xl" />
       ) : (

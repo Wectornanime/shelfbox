@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Button, Input, Label, TextArea, TextField } from "@heroui/react";
+import { Button, Card, Input, Label, TextArea, TextField } from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -8,6 +8,7 @@ import { BackIcon, SaveIcon, TrashIcon } from "@/ui/icons";
 import useMiniature from "@/ui/hooks/miniatures/useMiniature";
 import useDeleteMiniature from "@/ui/hooks/miniatures/useDeleteMiniature";
 import useUpdateMiniature from "@/ui/hooks/miniatures/useUpdateMiniature";
+import { imageService } from "@/app/composition/imageService";
 
 export default function MiniatureEditPage() {
   const navigate = useNavigate();
@@ -39,12 +40,32 @@ export default function MiniatureEditPage() {
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
   const [scale, setScale] = useState("");
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [error, setError] = useState<Error | null>(null);
 
   const loading = miniatureLoading || updateLoading || deleteLoading;
 
   const errorMessage = error ?? miniatureError ?? updateError ?? deleteError;
+
+  function handleImageClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setImage(file);
+
+    const previewUrl = URL.createObjectURL(file);
+
+    setImagePreview(previewUrl);
+  }
 
   useEffect(() => {
     if (!miniature) return;
@@ -53,6 +74,33 @@ export default function MiniatureEditPage() {
     setDescription(miniature.description ?? "");
     setBrand(miniature.brand);
     setScale(miniature.scale);
+
+    let objectUrl: string | null = null;
+
+    async function loadImage() {
+      const path = miniature!.images[0]?.path;
+
+      if (!path) {
+        setImagePreview(null);
+
+        return;
+      }
+
+      const url = await imageService.get(path);
+
+      if (url) {
+        objectUrl = url;
+        setImagePreview(url);
+      }
+    }
+
+    loadImage();
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
   }, [miniature]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -67,6 +115,12 @@ export default function MiniatureEditPage() {
     try {
       setError(null);
 
+      let newImage;
+
+      if (image) {
+        newImage = await imageService.save(image);
+      }
+
       await updateMiniature({
         id: miniatureId,
         data: {
@@ -74,6 +128,14 @@ export default function MiniatureEditPage() {
           description: description || undefined,
           brand,
           scale,
+          ...(newImage && {
+            images: [
+              {
+                id: crypto.randomUUID(),
+                path: newImage,
+              },
+            ],
+          }),
         },
       });
 
@@ -143,9 +205,28 @@ export default function MiniatureEditPage() {
             : errorMessage.message}
         </p>
       ) : miniature ? (
-        <section>
+        <section className="flex flex-col items-center gap-2">
+          <input
+            ref={fileInputRef}
+            accept="image/*"
+            className="hidden"
+            type="file"
+            onChange={handleImageChange}
+          />
+
+          <Card
+            className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
+            onClick={handleImageClick}
+          >
+            <img
+              alt={image?.name ?? "Preview da miniatura"}
+              className="absolute inset-0 h-full w-full object-cover"
+              src={imagePreview ?? "/no-image-found-360x250.png"}
+            />
+          </Card>
+
           <form
-            className="flex flex-col gap-4"
+            className="flex w-full flex-col gap-4"
             id="edit-miniature-form"
             onSubmit={handleSubmit}
           >
