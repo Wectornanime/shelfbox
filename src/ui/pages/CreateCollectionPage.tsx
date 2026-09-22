@@ -1,6 +1,6 @@
-import { Input, TextField, Label, TextArea } from "@heroui/react";
+import { Input, TextField, Label, TextArea, Card } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -11,10 +11,30 @@ export default function CreateCollectionPage() {
   const navigate = useNavigate();
   const { createCollection } = useCollections();
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  function handleImageClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    setImage(file);
+
+    const previewUrl = URL.createObjectURL(file);
+
+    setImagePreview(previewUrl);
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,6 +46,7 @@ export default function CreateCollectionPage() {
       await createCollection({
         name,
         description: description || undefined,
+        image: image ? image : undefined,
       });
 
       // depois vamos navegar de volta para "/"
@@ -50,9 +71,28 @@ export default function CreateCollectionPage() {
         title="Nova Coleção"
       />
 
-      <main className="flex flex-col gap-2">
+      <main className="flex flex-col items-center gap-2">
+        <input
+          ref={fileInputRef}
+          accept="image/*"
+          className="hidden"
+          type="file"
+          onChange={handleImageChange}
+        />
+
+        <Card
+          className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
+          onClick={handleImageClick}
+        >
+          <img
+            alt={image?.name ?? "Preview da miniatura"}
+            className="absolute inset-0 h-full w-full object-cover"
+            src={imagePreview ?? "/no-image-found-360x250.png"}
+          />
+        </Card>
+
         <form
-          className="flex flex-col gap-2"
+          className="w-full flex flex-col gap-2"
           id="create-collection-form"
           onSubmit={handleSubmit}
         >
