@@ -16,6 +16,7 @@
     "preview": "vite preview",
     "test": "jest --passWithNoTests",
     "test:coverage": "jest --coverage --passWithNoTests",
+    "release:next": "node scripts/get-next-version.mjs",
     "prepare": "husky",
     "lint-staged": "lint-staged"
   },
@@ -64,6 +65,7 @@
     "lint-staged": "^17.1.0",
     "postcss": "8.5.15",
     "prettier": "3.5.3",
+    "semantic-release": "^25.0.9",
     "tailwind-variants": "3.2.2",
     "tailwindcss": "4.3.1",
     "ts-jest": "^29.4.12",
