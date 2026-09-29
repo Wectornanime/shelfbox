@@ -1,18 +1,15 @@
-name: Release Preparation
+name: Dev Version and Changelog
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  push:
     branches:
-      - main
+      - dev
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
-  prepare:
-    if: github.head_ref == 'dev'
+  prepare-dev:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,8 +33,14 @@ jobs:
         run: |
           VERSION=$(npm run release:next --silent)
 
-          if [ "$VERSION" = "No release needed" ]; then
+          if [ -z "$VERSION" ] || [ "$VERSION" = "No release needed" ]; then
             echo "No release needed."
+            exit 0
+          fi
+
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" = "$VERSION" ]; then
+            echo "Version $VERSION is already set in package.json. Skipping."
             exit 0
           fi
 
@@ -49,15 +52,23 @@ jobs:
         run: |
           npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
 
-      - name: Commit version
+      - name: Generate changelog
+        if: steps.version.outputs.version != ''
+        run: |
+          npx conventional-changelog \
+            -p angular \
+            -i CHANGELOG.md \
+            -s
+
+      - name: Commit and push changes
         if: steps.version.outputs.version != ''
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add package.json package-lock.json
+          git add package.json package-lock.json CHANGELOG.md
 
-          git commit \
-            -m "chore(release): v${{ steps.version.outputs.version }}"
+          git diff --cached --quiet || \
+            git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
 
           git push origin dev
