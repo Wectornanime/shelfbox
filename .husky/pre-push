@@ -1,3 +1,7 @@
+if [ "$CI" = "true" ]; then
+  exit 0
+fi
+
 branch="$(git symbolic-ref --short HEAD)"
 
 case "$branch" in
