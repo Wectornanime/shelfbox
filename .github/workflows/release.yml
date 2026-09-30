@@ -16,31 +16,74 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24.18.0
+          cache: npm
 
-      - name: Read version
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve stable version
         id: version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          RAW_VERSION=$(node -p "require('./package.json').version")
+          STABLE_VERSION=$(echo "$RAW_VERSION" | sed -E 's/-dev\.[0-9]+$//')
 
-          echo "Release version: $VERSION"
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Development version in package.json: $RAW_VERSION"
+          echo "Target stable version: $STABLE_VERSION"
+
+          # Idempotency check: if tag already exists, skip release
+          if git rev-parse "v$STABLE_VERSION" >/dev/null 2>&1; then
+            echo "Tag v$STABLE_VERSION already exists. Skipping release."
+            exit 0
+          fi
+
+          echo "version=$STABLE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "raw_version=$RAW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version to stable
+        if: steps.version.outputs.version != ''
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          RAW_VERSION="${{ steps.version.outputs.raw_version }}"
+
+          if [ "$RAW_VERSION" != "$VERSION" ]; then
+            npm version "$VERSION" --no-git-tag-version
+
+            if [ -f "CHANGELOG.md" ]; then
+              npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+              git add CHANGELOG.md
+            fi
+
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+            git add package.json package-lock.json
+            git diff --cached --quiet || \
+              git commit -m "chore(release): v${VERSION} [skip ci]"
+
+            git push origin main
+          fi
 
       - name: Create tag
+        if: steps.version.outputs.version != ''
         run: |
-          git tag "v${{ steps.version.outputs.version }}"
-          git push origin "v${{ steps.version.outputs.version }}"
+          VERSION="${{ steps.version.outputs.version }}"
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
 
       - name: Create GitHub Release
+        if: steps.version.outputs.version != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          VERSION="${{ steps.version.outputs.version }}"
           gh release create \
-            "v${{ steps.version.outputs.version }}" \
-            --title "v${{ steps.version.outputs.version }}" \
+            "v$VERSION" \
+            --title "v$VERSION" \
             --generate-notes

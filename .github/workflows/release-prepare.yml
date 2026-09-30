@@ -58,7 +58,8 @@ jobs:
           npx conventional-changelog \
             -p angular \
             -i CHANGELOG.md \
-            -s
+            -s \
+            -r 0
 
       - name: Commit and push changes
         if: steps.version.outputs.version != ''
