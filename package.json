@@ -35,7 +35,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "6.23.0",
-    "server": "^1.0.42"
+    "serve": "^14.2.6"
   },
   "devDependencies": {
     "@eslint/compat": "1.2.8",
