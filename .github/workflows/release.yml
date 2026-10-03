@@ -34,10 +34,9 @@ jobs:
           RAW_VERSION=$(node -p "require('./package.json').version")
           STABLE_VERSION=$(echo "$RAW_VERSION" | sed -E 's/-dev\.[0-9]+$//')
 
-          echo "Development version in package.json: $RAW_VERSION"
-          echo "Target stable version: $STABLE_VERSION"
+          echo "Development version: $RAW_VERSION"
+          echo "Stable version: $STABLE_VERSION"
 
-          # Idempotency check: if tag already exists, skip release
           if git rev-parse "v$STABLE_VERSION" >/dev/null 2>&1; then
             echo "Tag v$STABLE_VERSION already exists. Skipping release."
             exit 0
@@ -49,26 +48,29 @@ jobs:
       - name: Update package version to stable
         if: steps.version.outputs.version != ''
         run: |
-          VERSION="${{ steps.version.outputs.version }}"
-          RAW_VERSION="${{ steps.version.outputs.raw_version }}"
+          npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
 
-          if [ "$RAW_VERSION" != "$VERSION" ]; then
-            npm version "$VERSION" --no-git-tag-version
+      - name: Generate changelog
+        if: steps.version.outputs.version != ''
+        run: |
+          npx conventional-changelog \
+            -n ./scripts/changelog-preset.mjs \
+            -i CHANGELOG.md \
+            -s \
+            -r 0
 
-            if [ -f "CHANGELOG.md" ]; then
-              npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-              git add CHANGELOG.md
-            fi
+      - name: Commit release
+        if: steps.version.outputs.version != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json CHANGELOG.md
 
-            git add package.json package-lock.json
-            git diff --cached --quiet || \
-              git commit -m "chore(release): v${VERSION} [skip ci]"
+          git diff --cached --quiet || \
+            git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
 
-            git push origin main
-          fi
+          git push origin main
 
       - name: Create tag
         if: steps.version.outputs.version != ''

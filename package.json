@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "start": "serve -s dist -l $PORT",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
@@ -33,7 +34,8 @@
     "lucide-react": "^1.25.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "6.23.0"
+    "react-router-dom": "6.23.0",
+    "server": "^1.0.42"
   },
   "devDependencies": {
     "@eslint/compat": "1.2.8",
