@@ -36,8 +36,4 @@ jobs:
       - name: Deploy to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway up  \
-            --project "${{ vars.RAILWAY_PROJECT_ID }}" \
-            --environment "${{ inputs.environment }}" \
-            --service "ShelfBox" \
-            --ci
+        run: railway up --project "${{ vars.RAILWAY_PROJECT_ID }}" --environment "${{ inputs.environment }}" --service "ShelfBox" --ci
