@@ -33,8 +33,8 @@ export default function MiniatureDetailsPage() {
       ) : miniature ? (
         <section>
           <ShelfBoxImage
-            alt={miniature.images[0].alt}
-            path={miniature.images[0].path}
+            alt={miniature.images.length > 0 ? miniature.images[0].alt : ""}
+            path={miniature.images.length > 0 ? miniature.images[0].path : ""}
           />
 
           <h1>{miniature.name}</h1>
