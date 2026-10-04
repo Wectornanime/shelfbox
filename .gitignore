@@ -29,3 +29,7 @@ bun.lockb
 
 # Test coverage
 coverage/
+
+# Envs
+.env
+!.env.example
