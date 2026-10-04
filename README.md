@@ -132,6 +132,10 @@ O histórico de versões e alterações do projeto é mantido em [`CHANGELOG.md`
 
 ---
 
+## 🤝 Contribuindo
+
+Consulte [`CONTRIBUTING.md`](./CONTRIBUTING.md) para o fluxo de desenvolvimento, convenção de commits e regras de PR.
+
 ## 🎯 Objetivos
 
 - Aplicação **Offline First**
