@@ -12,6 +12,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,22 +73,34 @@ jobs:
           git diff --cached --quiet || \
             git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
 
-          git push origin main
+          if [ "$ACT" != "true" ]; then
+            git push origin main
+          fi
 
       - name: Create tag
-        if: steps.version.outputs.version != ''
+        if: steps.version.outputs.version != '' && !env.ACT
         run: |
           VERSION="${{ steps.version.outputs.version }}"
+
           git tag "v$VERSION"
           git push origin "v$VERSION"
 
       - name: Create GitHub Release
-        if: steps.version.outputs.version != ''
+        if: steps.version.outputs.version != '' && !env.ACT
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION="${{ steps.version.outputs.version }}"
+
           gh release create \
             "v$VERSION" \
             --title "v$VERSION" \
             --generate-notes
+
+  deploy-production:
+    needs: release
+    if: needs.release.outputs.version != ''
+    uses: ./.github/workflows/deployment.yml
+    with:
+      environment: production
+      ref: main

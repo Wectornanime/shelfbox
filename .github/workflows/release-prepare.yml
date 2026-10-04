@@ -12,6 +12,9 @@ jobs:
   prepare-dev:
     runs-on: ubuntu-latest
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -39,6 +42,7 @@ jobs:
           fi
 
           CURRENT_VERSION=$(node -p "require('./package.json').version")
+
           if [ "$CURRENT_VERSION" = "$VERSION" ]; then
             echo "Version $VERSION is already set in package.json. Skipping."
             exit 0
@@ -53,7 +57,7 @@ jobs:
           npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
 
       - name: Commit and push changes
-        if: steps.version.outputs.version != ''
+        if: steps.version.outputs.version != '' && !env.ACT
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -64,3 +68,11 @@ jobs:
             git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
 
           git push origin dev
+
+  deploy-dev:
+    needs: prepare-dev
+    if: needs.prepare-dev.outputs.version != ''
+    uses: ./.github/workflows/deployment.yml
+    with:
+      environment: dev
+      ref: dev
