@@ -30,8 +30,7 @@ flowchart TD
         PUSH_DEV --> CALC["Calcula próxima versão via commits desde a última tag"]
         CALC --> PRE["Adiciona identificador de pre-release"]
         PRE --> BUMP["Atualiza package.json e package-lock.json"]
-        BUMP --> CHANGELOG["Atualiza CHANGELOG.md"]
-        CHANGELOG --> COMMIT_DEV["Commit chore(release) com [skip ci]"]
+        BUMP --> COMMIT_DEV["Commit chore(release) com [skip ci]"]
     end
 
     subgraph MainBranch["3. Publicação em main (release.yml)"]
@@ -41,7 +40,8 @@ flowchart TD
         PUSH_MAIN --> READ_PRE["Lê versão de desenvolvimento"]
         READ_PRE --> STABLE["Remove identificador de pre-release"]
         STABLE --> UPDATE["Atualiza package.json e package-lock.json para versão estável"]
-        UPDATE --> CREATE_TAG["Cria e publica tag Git vX.Y.Z"]
+        UPDATE --> CHANGELOG["Gera/atualiza CHANGELOG.md"]
+        CHANGELOG --> CREATE_TAG["Cria e publica tag Git vX.Y.Z"]
         CREATE_TAG --> GH_RELEASE["Cria GitHub Release oficial"]
     end
 ```
@@ -153,8 +153,9 @@ Apenas nesse momento a tag oficial e a GitHub Release são criadas.
   3. Calcula a próxima versão SemVer utilizando o Semantic Release.
   4. Adiciona o identificador de pre-release e seu respectivo número.
   5. Atualiza `package.json` e `package-lock.json` com a versão de desenvolvimento.
-  6. Atualiza o `CHANGELOG.md` com as alterações acumuladas.
-  7. Commita e envia as alterações para `dev` com a mensagem `chore(release): v${VERSION} [skip ci]`.
+  6. Commita e envia as alterações para `dev` com a mensagem `chore(release): v${VERSION} [skip ci]`.
+
+> O `CHANGELOG.md` não é atualizado na `dev`; ele é gerado apenas em `main`, no momento da release estável.
 
 Exemplo:
 
@@ -192,9 +193,11 @@ O processo não cria tags nem GitHub Releases.
   1. Lê a versão de pre-release consolidada no `package.json`.
   2. Remove o identificador de pre-release, obtendo a versão estável correspondente.
   3. Atualiza `package.json` e `package-lock.json` para a versão estável.
-  4. Cria e publica a tag Git `v${VERSION}`.
-  5. Cria a **GitHub Release** oficial contendo o apontamento para a tag e as release notes.
-  6. Garante que a versão publicada corresponda ao estado promovido pela `dev`.
+  4. Gera/atualiza o `CHANGELOG.md` com as alterações desde a última release.
+  5. Commita as alterações com a mensagem `chore(release): v${VERSION} [skip ci]`.
+  6. Cria e publica a tag Git `v${VERSION}`.
+  7. Cria a **GitHub Release** oficial contendo o apontamento para a tag e as release notes.
+  8. Garante que a versão publicada corresponda ao estado promovido pela `dev`.
 
 Exemplo:
 
