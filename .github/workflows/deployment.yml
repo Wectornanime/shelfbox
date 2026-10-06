@@ -9,6 +9,24 @@ on:
       ref:
         required: true
         type: string
+    secrets:
+      RAILWAY_TOKEN:
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Railway environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - production
+      ref:
+        description: "Git ref to deploy"
+        required: true
+        default: "dev"
+        type: string
 
 
 jobs:
