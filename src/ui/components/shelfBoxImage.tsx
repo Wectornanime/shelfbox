@@ -1,5 +1,6 @@
 import { MouseEventHandler, useEffect, useState } from "react";
 import { Card } from "@heroui/react";
+import clsx from "clsx";
 
 import Loading from "./loading";
 
@@ -8,12 +9,14 @@ import { imageService } from "@/app/composition/imageService";
 interface ShelfBoxImageProps {
   path: string;
   alt?: string;
-  onClick?: MouseEventHandler<HTMLDivElement> | undefined;
+  className?: string;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 export default function ShelfBoxImage({
   path,
   alt,
+  className,
   onClick,
 }: ShelfBoxImageProps) {
   const [url, setUrl] = useState<string | null>(null);
@@ -44,7 +47,11 @@ export default function ShelfBoxImage({
 
   return (
     <Card
-      className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
+      className={clsx(
+        "relative overflow-hidden",
+        className ?? "h-50 w-50 rounded-3xl",
+        onClick && "cursor-pointer",
+      )}
       onClick={onClick}
     >
       {isLoading ? (
