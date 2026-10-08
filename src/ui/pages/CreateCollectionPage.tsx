@@ -68,7 +68,7 @@ export default function CreateCollectionPage() {
             <BackIcon />
           </Link>
         }
-        title="Nova Coleção"
+        title="Nova coleção"
       />
 
       <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
@@ -94,18 +94,9 @@ export default function CreateCollectionPage() {
             </Card>
           </div>
 
-          <div className="min-w-0 space-y-6 md:py-4">
-            <div>
-              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">
-                Nova coleção
-              </p>
-              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Criar coleção
-              </h1>
-            </div>
-
+          <div className="min-w-0 flex flex-col gap-4 md:py-4">
             <form
-              className="flex w-full flex-col gap-4 rounded-3xl border border-foreground/10 bg-surface p-5 shadow-sm sm:p-6"
+              className="flex w-full flex-col gap-4"
               id="create-collection-form"
               onSubmit={handleSubmit}
             >
