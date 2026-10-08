@@ -79,7 +79,7 @@ export default function CreateMiniaturePage() {
         title="Nova Miniatura"
       />
 
-      <main className="flex flex-col items-center gap-2">
+      <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
         <input
           ref={fileInputRef}
           accept="image/*"
@@ -88,39 +88,68 @@ export default function CreateMiniaturePage() {
           onChange={handleImageChange}
         />
 
-        <Card
-          className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
-          onClick={handleImageClick}
-        >
-          <img
-            alt={image?.name ?? "Preview da miniatura"}
-            className="absolute inset-0 h-full w-full object-cover"
-            src={imagePreview ?? "/no-image-found-360x250.png"}
-          />
-        </Card>
+        <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">
+          <div className="rounded-3xl bg-surface-secondary p-3 shadow-sm sm:p-5">
+            <Card
+              className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl"
+              onClick={handleImageClick}
+            >
+              <img
+                alt={image?.name ?? "Preview da miniatura"}
+                className="absolute inset-0 h-full w-full object-cover"
+                src={imagePreview ?? "/no-image-found-360x250.png"}
+              />
+            </Card>
+          </div>
 
-        <form
-          className="flex w-full flex-col gap-2"
-          id="create-miniature-form"
-          onSubmit={handleSubmit}
-        >
-          <TextField isRequired name="name" value={name} onChange={setName}>
-            <Label>Nome</Label>
-            <Input placeholder="Ex.: Nissan Skyline GT-R" />
-          </TextField>
+          <div className="min-w-0 space-y-6 md:py-4">
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">
+                Nova miniatura
+              </p>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Criar miniatura
+              </h1>
+            </div>
 
-          <TextField isRequired name="brand" value={brand} onChange={setBrand}>
-            <Label>Marca</Label>
-            <Input placeholder="Ex.: Hot Wheels" />
-          </TextField>
+            <form
+              className="flex w-full flex-col gap-4 rounded-3xl border border-foreground/10 bg-surface p-5 shadow-sm sm:p-6"
+              id="create-miniature-form"
+              onSubmit={handleSubmit}
+            >
+              <TextField isRequired name="name" value={name} onChange={setName}>
+                <Label>Nome</Label>
+                <Input placeholder="Ex.: Nissan Skyline GT-R" />
+              </TextField>
 
-          <TextField isRequired name="scale" value={scale} onChange={setScale}>
-            <Label>Escala</Label>
-            <Input placeholder="Ex.: 1:64" />
-          </TextField>
+              <TextField
+                isRequired
+                name="brand"
+                value={brand}
+                onChange={setBrand}
+              >
+                <Label>Marca</Label>
+                <Input placeholder="Ex.: Hot Wheels" />
+              </TextField>
 
-          {error && <p role="alert">{error}</p>}
-        </form>
+              <TextField
+                isRequired
+                name="scale"
+                value={scale}
+                onChange={setScale}
+              >
+                <Label>Escala</Label>
+                <Input placeholder="Ex.: 1:64" />
+              </TextField>
+
+              {error && (
+                <p className="text-danger" role="alert">
+                  {error}
+                </p>
+              )}
+            </form>
+          </div>
+        </section>
       </main>
 
       <Fab

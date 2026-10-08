@@ -71,7 +71,7 @@ export default function CreateCollectionPage() {
         title="Nova Coleção"
       />
 
-      <main className="flex flex-col items-center gap-2">
+      <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
         <input
           ref={fileInputRef}
           accept="image/*"
@@ -80,56 +80,75 @@ export default function CreateCollectionPage() {
           onChange={handleImageChange}
         />
 
-        <Card
-          className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
-          onClick={handleImageClick}
-        >
-          <img
-            alt={image?.name ?? "Preview da miniatura"}
-            className="absolute inset-0 h-full w-full object-cover"
-            src={imagePreview ?? "/no-image-found-360x250.png"}
-          />
-        </Card>
+        <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">
+          <div className="rounded-3xl bg-surface-secondary p-3 shadow-sm sm:p-5">
+            <Card
+              className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl"
+              onClick={handleImageClick}
+            >
+              <img
+                alt={image?.name ?? "Preview da coleção"}
+                className="absolute inset-0 h-full w-full object-cover"
+                src={imagePreview ?? "/no-image-found-360x250.png"}
+              />
+            </Card>
+          </div>
 
-        <form
-          className="w-full flex flex-col gap-2"
-          id="create-collection-form"
-          onSubmit={handleSubmit}
-        >
-          <TextField
-            isRequired
-            className="w-full"
-            name="name"
-            type="text"
-            value={name}
-            onChange={setName}
-          >
-            <Label>Nome</Label>
-            <Input placeholder="Coleção" />
-          </TextField>
+          <div className="min-w-0 space-y-6 md:py-4">
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">
+                Nova coleção
+              </p>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Criar coleção
+              </h1>
+            </div>
 
-          <TextField
-            className="w-full"
-            name="description"
-            type="text"
-            value={description}
-            onChange={setDescription}
-          >
-            <Label>Descrição</Label>
-            <TextArea placeholder="Uma nova coleção ..." rows={4} />
-          </TextField>
+            <form
+              className="flex w-full flex-col gap-4 rounded-3xl border border-foreground/10 bg-surface p-5 shadow-sm sm:p-6"
+              id="create-collection-form"
+              onSubmit={handleSubmit}
+            >
+              <TextField
+                isRequired
+                className="w-full"
+                name="name"
+                type="text"
+                value={name}
+                onChange={setName}
+              >
+                <Label>Nome</Label>
+                <Input placeholder="Coleção" />
+              </TextField>
 
-          {error && <p role="alert">{error}</p>}
-        </form>
+              <TextField
+                className="w-full"
+                name="description"
+                type="text"
+                value={description}
+                onChange={setDescription}
+              >
+                <Label>Descrição</Label>
+                <TextArea placeholder="Uma nova coleção ..." rows={4} />
+              </TextField>
 
-        <Fab
-          form="create-collection-form"
-          icon={<CheckCircleIcon />}
-          isDisabled={loading}
-          label="Criar coleção"
-          type="submit"
-        />
+              {error && (
+                <p className="text-danger" role="alert">
+                  {error}
+                </p>
+              )}
+            </form>
+          </div>
+        </section>
       </main>
+
+      <Fab
+        form="create-collection-form"
+        icon={<CheckCircleIcon />}
+        isDisabled={loading}
+        label="Criar coleção"
+        type="submit"
+      />
     </>
   );
 }

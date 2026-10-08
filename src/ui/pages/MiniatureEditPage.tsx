@@ -201,87 +201,110 @@ export default function MiniatureEditPage() {
         title={miniature?.name ?? "Miniatura"}
       />
 
-      {miniatureLoading ? (
-        <p>Carregando miniatura...</p>
-      ) : errorMessage ? (
-        <p>
-          {typeof errorMessage === "string"
-            ? errorMessage
-            : errorMessage.message}
-        </p>
-      ) : miniature ? (
-        <section className="flex flex-col items-center gap-2">
-          <input
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            type="file"
-            onChange={handleImageChange}
-          />
-
-          <Card
-            className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
-            onClick={handleImageClick}
+      <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
+        {miniatureLoading ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-muted"
+            role="status"
           >
-            <img
-              alt={image?.name ?? "Preview da miniatura"}
-              className="absolute inset-0 h-full w-full object-cover"
-              src={imagePreview ?? "/no-image-found-360x250.png"}
+            Carregando miniatura...
+          </p>
+        ) : errorMessage ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-danger"
+            role="alert"
+          >
+            {typeof errorMessage === "string"
+              ? errorMessage
+              : errorMessage.message}
+          </p>
+        ) : miniature ? (
+          <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">
+            <input
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              type="file"
+              onChange={handleImageChange}
             />
-          </Card>
 
-          <form
-            className="flex w-full flex-col gap-4"
-            id="edit-miniature-form"
-            onSubmit={handleSubmit}
-          >
-            <TextField
-              isRequired
-              className="w-full"
-              name="name"
-              type="text"
-              value={name}
-              onChange={setName}
-            >
-              <Label>Nome</Label>
-              <Input />
-            </TextField>
+            <div className="rounded-3xl bg-surface-secondary p-3 shadow-sm sm:p-5">
+              <Card
+                className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl"
+                onClick={handleImageClick}
+              >
+                <img
+                  alt={image?.name ?? "Preview da miniatura"}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={imagePreview ?? "/no-image-found-360x250.png"}
+                />
+              </Card>
+            </div>
 
-            <TextField
-              className="w-full"
-              name="description"
-              type="text"
-              value={description}
-              onChange={setDescription}
-            >
-              <Label>Descrição</Label>
-              <TextArea />
-            </TextField>
+            <div className="min-w-0 space-y-6 md:py-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">
+                  Editando miniatura
+                </p>
+                <h1 className="break-words text-3xl font-bold tracking-tight sm:text-4xl">
+                  {miniature.name}
+                </h1>
+              </div>
 
-            <TextField
-              className="w-full"
-              name="brand"
-              type="text"
-              value={brand}
-              onChange={setBrand}
-            >
-              <Label>Marca</Label>
-              <Input />
-            </TextField>
+              <form
+                className="flex w-full flex-col gap-4 rounded-3xl border border-foreground/10 bg-surface p-5 shadow-sm sm:p-6"
+                id="edit-miniature-form"
+                onSubmit={handleSubmit}
+              >
+                <TextField
+                  isRequired
+                  className="w-full"
+                  name="name"
+                  type="text"
+                  value={name}
+                  onChange={setName}
+                >
+                  <Label>Nome</Label>
+                  <Input />
+                </TextField>
 
-            <TextField
-              className="w-full"
-              name="scale"
-              type="text"
-              value={scale}
-              onChange={setScale}
-            >
-              <Label>Escala</Label>
-              <Input />
-            </TextField>
-          </form>
-        </section>
-      ) : null}
+                <TextField
+                  className="w-full"
+                  name="description"
+                  type="text"
+                  value={description}
+                  onChange={setDescription}
+                >
+                  <Label>Descrição</Label>
+                  <TextArea />
+                </TextField>
+
+                <TextField
+                  className="w-full"
+                  name="brand"
+                  type="text"
+                  value={brand}
+                  onChange={setBrand}
+                >
+                  <Label>Marca</Label>
+                  <Input />
+                </TextField>
+
+                <TextField
+                  className="w-full"
+                  name="scale"
+                  type="text"
+                  value={scale}
+                  onChange={setScale}
+                >
+                  <Label>Escala</Label>
+                  <Input />
+                </TextField>
+              </form>
+            </div>
+          </section>
+        ) : null}
+      </main>
 
       <Fab
         form="edit-miniature-form"
