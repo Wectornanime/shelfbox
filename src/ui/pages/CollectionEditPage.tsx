@@ -180,63 +180,80 @@ export default function CollectionEditPage() {
             <TrashIcon />
           </Button>
         }
-        title={collection?.name ?? "Collection"}
+        title="Editar coleção"
       />
 
-      {collectionLoading ? (
-        <p>Carregando coleção...</p>
-      ) : errorMessage ? (
-        <p>{errorMessage.toString()}</p>
-      ) : collection ? (
-        <section className="flex flex-col items-center gap-2">
-          <input
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            type="file"
-            onChange={handleImageChange}
-          />
-
-          <Card
-            className="relative col-span-12 h-50 w-50 cursor-pointer overflow-hidden rounded-3xl lg:col-span-6"
-            onClick={handleImageClick}
+      <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
+        {collectionLoading ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-muted"
+            role="status"
           >
-            <img
-              alt={image?.name ?? "Preview da coleção"}
-              className="absolute inset-0 h-full w-full object-cover"
-              src={imagePreview ?? "/no-image-found-360x250.png"}
+            Carregando coleção...
+          </p>
+        ) : errorMessage ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-danger"
+            role="alert"
+          >
+            {errorMessage.toString()}
+          </p>
+        ) : collection ? (
+          <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">
+            <input
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              type="file"
+              onChange={handleImageChange}
             />
-          </Card>
-          <form
-            className="flex flex-col w-full gap-4"
-            id="edit-collection-form"
-            onSubmit={handleSubmit}
-          >
-            <TextField
-              isRequired
-              className="w-full"
-              name="name"
-              type="text"
-              value={name}
-              onChange={setName}
-            >
-              <Label>Nome</Label>
-              <Input />
-            </TextField>
 
-            <TextField
-              className="w-full"
-              name="description"
-              type="text"
-              value={description}
-              onChange={setDescription}
-            >
-              <Label>Descrição</Label>
-              <Input />
-            </TextField>
-          </form>
-        </section>
-      ) : null}
+            <div className="rounded-3xl bg-surface-secondary p-3 shadow-sm sm:p-5">
+              <Card
+                className="relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl"
+                onClick={handleImageClick}
+              >
+                <img
+                  alt={image?.name ?? "Preview da coleção"}
+                  className="absolute inset-0 h-full w-full object-cover"
+                  src={imagePreview ?? "/no-image-found-360x250.png"}
+                />
+              </Card>
+            </div>
+
+            <div className="min-w-0 flex flex-col gap-4 md:py-4">
+              <form
+                className="flex w-full flex-col gap-4"
+                id="edit-collection-form"
+                onSubmit={handleSubmit}
+              >
+                <TextField
+                  isRequired
+                  className="w-full"
+                  name="name"
+                  type="text"
+                  value={name}
+                  onChange={setName}
+                >
+                  <Label>Nome</Label>
+                  <Input />
+                </TextField>
+
+                <TextField
+                  className="w-full"
+                  name="description"
+                  type="text"
+                  value={description}
+                  onChange={setDescription}
+                >
+                  <Label>Descrição</Label>
+                  <Input />
+                </TextField>
+              </form>
+            </div>
+          </section>
+        ) : null}
+      </main>
 
       <Fab
         form="edit-collection-form"

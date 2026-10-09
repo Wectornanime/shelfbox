@@ -17,26 +17,58 @@ export default function CollectionDetailsPage() {
     <>
       <PageHeader
         left={
-          <Link to="./../">
+          <Link aria-label="Voltar para as miniaturas" to="./../">
             <BackIcon />
           </Link>
         }
-        title={collection?.name ?? "Collection"}
+        title={collection?.name ?? "Coleção"}
       />
 
-      {loading ? (
-        <p>Carregando coleção...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : collection ? (
-        <section>
-          <ShelfBoxImage path={collection.icon ?? ""} />
+      <main className="mx-auto w-full max-w-4xl pb-28 pt-4 sm:pt-8">
+        {loading ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-muted"
+            role="status"
+          >
+            Carregando coleção...
+          </p>
+        ) : error ? (
+          <p
+            className="rounded-2xl bg-surface p-6 text-center text-danger"
+            role="alert"
+          >
+            {error}
+          </p>
+        ) : collection ? (
+          <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">
+            <div className="rounded-3xl bg-surface-secondary p-3 shadow-sm sm:p-5">
+              <ShelfBoxImage
+                alt={collection.name}
+                className="aspect-square w-full rounded-2xl"
+                path={collection.icon ?? ""}
+              />
+            </div>
 
-          <h1>{collection.name}</h1>
+            <div className="min-w-0 space-y-6 md:py-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-accent">
+                  Coleção
+                </p>
+                <h1 className="break-words text-3xl font-bold tracking-tight sm:text-4xl">
+                  {collection.name}
+                </h1>
+              </div>
 
-          <p>Descrição: {collection.description}</p>
-        </section>
-      ) : null}
+              <div className="rounded-3xl border border-foreground/10 bg-surface p-5 shadow-sm sm:p-6">
+                <h2 className="mb-3 text-lg font-semibold">Sobre a coleção</h2>
+                <p className="whitespace-pre-wrap break-words leading-relaxed text-muted">
+                  {collection.description || "Nenhuma descrição adicionada."}
+                </p>
+              </div>
+            </div>
+          </section>
+        ) : null}
+      </main>
 
       <Fab
         icon={<EditIcon />}
