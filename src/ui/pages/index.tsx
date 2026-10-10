@@ -16,7 +16,7 @@ export default function IndexPage() {
     if (!error) return;
 
     toast.danger("Erro ao carregar coleções", {
-      description: error,
+      description: error.message,
     });
   }, [error]);
 
