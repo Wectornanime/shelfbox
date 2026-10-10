@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { SearchField } from "@heroui/react";
+import { SearchField, toast } from "@heroui/react";
+import { useEffect } from "react";
 import Fab from "@components/fab";
 
 import MiniatureCard from "../components/miniatureCard";
@@ -13,6 +14,14 @@ export default function ListMiniaturesByCollectionIdPage() {
   const { collectionId } = useParams<{ collectionId: string }>();
   const { miniatures, loading, error } =
     useMiniaturesByCollection(collectionId);
+
+  useEffect(() => {
+    if (!error) return;
+
+    toast.danger("Erro ao carregar miniaturas", {
+      description: error,
+    });
+  }, [error]);
 
   return (
     <>

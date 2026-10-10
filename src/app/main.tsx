@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { registerSW } from "virtual:pwa-register";
+import { toast } from "@heroui/react";
 
 import App from "./App.tsx";
 import { Provider } from "./provider.tsx";
@@ -14,27 +15,28 @@ if ("serviceWorker" in navigator) {
     immediate: true,
 
     onOfflineReady() {
-      window.alert("ShelfBox está pronto para uso offline.");
+      const id = toast("ShelfBox está pronto para uso offline.", {
+        actionProps: {
+          children: "Dismiss",
+          onPress: () => toast.close(id),
+          variant: "tertiary",
+        },
+        variant: "default",
+      });
     },
 
     onNeedRefresh() {
-      // window.alert("Uma nova versão do ShelfBox está disponível.");
-      if (
-        window.confirm(
+      const id = toast.info("Nova versão disponível.", {
+        actionProps: {
+          children: "Atualizar",
+          onPress: () => {
+            updateSW(true);
+            toast.close(id);
+          },
+        },
+        description:
           "Uma nova versão do ShelfBox está disponível, você gostaria de atualizar agora?",
-        )
-      ) {
-        updateSW(true);
-      }
-
-      // Futuramente:
-      // showToast({
-      //   title: "Nova versão disponível",
-      //   action: {
-      //     label: "Atualizar",
-      //     onPress: () => updateSW(true),
-      //   },
-      // });
+      });
     },
   });
 }

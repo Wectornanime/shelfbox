@@ -1,6 +1,6 @@
-import { Input, TextField, Label, TextArea, Card } from "@heroui/react";
+import { Input, TextField, Label, TextArea, Card, toast } from "@heroui/react";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -19,6 +19,14 @@ export default function CreateCollectionPage() {
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!error) return;
+
+    toast.danger("Erro ao cadastrar coleção", {
+      description: error,
+    });
+  }, [error]);
 
   function handleImageClick() {
     fileInputRef.current?.click();
@@ -49,6 +57,7 @@ export default function CreateCollectionPage() {
         image: image ? image : undefined,
       });
 
+      toast.success("Coleção cadastrada com sucesso");
       // depois vamos navegar de volta para "/"
       navigate("/");
     } catch (error) {
@@ -122,12 +131,6 @@ export default function CreateCollectionPage() {
                 <Label>Descrição</Label>
                 <TextArea placeholder="Uma nova coleção ..." rows={4} />
               </TextField>
-
-              {error && (
-                <p className="text-danger" role="alert">
-                  {error}
-                </p>
-              )}
             </form>
           </div>
         </section>

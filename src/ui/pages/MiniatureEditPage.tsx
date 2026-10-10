@@ -1,9 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Button, Card, Input, Label, TextArea, TextField } from "@heroui/react";
+import {
+  Button,
+  Card,
+  Input,
+  Label,
+  TextArea,
+  TextField,
+  toast,
+} from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
+import UserDialogConfirm from "@/ui/components/userDialogConfirm";
 import { BackIcon, SaveIcon, TrashIcon } from "@/ui/icons";
 import useMiniature from "@/ui/hooks/miniatures/useMiniature";
 import useDeleteMiniature from "@/ui/hooks/miniatures/useDeleteMiniature";
@@ -50,6 +59,15 @@ export default function MiniatureEditPage() {
   const loading = miniatureLoading || updateLoading || deleteLoading;
 
   const errorMessage = error ?? miniatureError ?? updateError ?? deleteError;
+
+  useEffect(() => {
+    if (!errorMessage) return;
+
+    toast.danger("Erro ao editar miniatura", {
+      description:
+        typeof errorMessage === "string" ? errorMessage : errorMessage.message,
+    });
+  }, [errorMessage]);
 
   function handleImageClick() {
     fileInputRef.current?.click();
@@ -144,6 +162,7 @@ export default function MiniatureEditPage() {
         },
       });
 
+      toast.success("Miniatura editada com sucesso.");
       navigate(`/collections/${collectionId}/miniatures/${miniatureId}`);
     } catch (error) {
       const normalizedError =
@@ -167,6 +186,7 @@ export default function MiniatureEditPage() {
 
       await deleteMiniature(miniatureId);
 
+      toast.success("Miniatura removida com sucesso.");
       navigate(`/collections/${collectionId}`);
     } catch (error) {
       const normalizedError =
@@ -187,16 +207,24 @@ export default function MiniatureEditPage() {
           </Link>
         }
         right={
-          <Button
-            isIconOnly
-            aria-label="Excluir miniatura"
-            isDisabled={loading}
-            type="button"
-            variant="ghost"
-            onPress={handleDelete}
+          <UserDialogConfirm
+            actionConfirm={{
+              label: "Remover miniatura",
+              onPress: handleDelete,
+            }}
+            body="Ao remover esta miniatura ela não poderá mais retornar."
+            header="Remover miniatura?"
           >
-            <TrashIcon />
-          </Button>
+            <Button
+              isIconOnly
+              aria-label="Excluir miniatura"
+              isDisabled={loading}
+              type="button"
+              variant="ghost"
+            >
+              <TrashIcon />
+            </Button>
+          </UserDialogConfirm>
         }
         title="Editar miniatura"
       />
