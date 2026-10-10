@@ -4,6 +4,7 @@ import { Button, Card, Input, Label, TextField, toast } from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
+import UserDialogConfirm from "@/ui/components/userDialogConfirm";
 import { BackIcon, SaveIcon, TrashIcon } from "@/ui/icons";
 import useCollection from "@/ui/hooks/collections/useCollection";
 import useDeleteCollection from "@/ui/hooks/collections/useDeleteCollection";
@@ -179,16 +180,24 @@ export default function CollectionEditPage() {
           </Link>
         }
         right={
-          <Button
-            isIconOnly
-            aria-label="Excluir coleção"
-            isDisabled={loading}
-            type="button"
-            variant="ghost"
-            onPress={handleDelete}
+          <UserDialogConfirm
+            actionConfirm={{
+              label: "Remover coleção",
+              onPress: handleDelete,
+            }}
+            body="Ao remover esta coleção ela não poderá mais retornar, junto com todos os itens que pertencem a ela."
+            header="Remover coleção?"
           >
-            <TrashIcon />
-          </Button>
+            <Button
+              isIconOnly
+              aria-label="Excluir coleção"
+              isDisabled={loading}
+              type="button"
+              variant="ghost"
+            >
+              <TrashIcon />
+            </Button>
+          </UserDialogConfirm>
         }
         title="Editar coleção"
       />
