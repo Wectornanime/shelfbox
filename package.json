@@ -5,7 +5,7 @@
     "email": "wectornanime@gmail.com"
   },
   "private": true,
-  "version": "0.1.0-dev.4",
+  "version": "0.1.0-dev.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
