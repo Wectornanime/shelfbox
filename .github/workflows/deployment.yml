@@ -46,7 +46,12 @@ jobs:
           cache: npm
 
       - name: Install Railway CLI
-        run: npm install -g @railway/cli
+        run: |
+          curl -fsSL https://railway.com/install.sh | sh
+          echo "$HOME/.railway/bin" >> "$GITHUB_PATH"
+
+      - name: Verify Railway CLI
+        run: railway --version
 
       - name: Deploy to Railway
         env:

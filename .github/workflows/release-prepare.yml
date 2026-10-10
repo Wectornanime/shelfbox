@@ -69,10 +69,10 @@ jobs:
 
           git push origin dev
 
-  # deploy-dev:
-  #   needs: prepare-dev
-  #   if: needs.prepare-dev.outputs.version != ''
-  #   uses: ./.github/workflows/deployment.yml
-  #   with:
-  #     environment: dev
-  #     ref: dev
+  deploy-dev:
+    needs: prepare-dev
+    if: needs.prepare-dev.outputs.version != ''
+    uses: ./.github/workflows/deployment.yml
+    with:
+      environment: dev
+      ref: dev
