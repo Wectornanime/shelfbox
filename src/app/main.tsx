@@ -15,14 +15,7 @@ if ("serviceWorker" in navigator) {
     immediate: true,
 
     onOfflineReady() {
-      const id = toast("ShelfBox está pronto para uso offline.", {
-        actionProps: {
-          children: "Dismiss",
-          onPress: () => toast.close(id),
-          variant: "tertiary",
-        },
-        variant: "default",
-      });
+      toast.info("ShelfBox está pronto para uso offline.");
     },
 
     onNeedRefresh() {
