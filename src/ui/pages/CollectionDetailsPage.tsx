@@ -1,4 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { toast } from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -12,6 +14,14 @@ export default function CollectionDetailsPage() {
     collectionId: string;
   }>();
   const { collection, loading, error } = useCollection(collectionId);
+
+  useEffect(() => {
+    if (!error) return;
+
+    toast.danger("Erro ao abrir a coleção", {
+      description: error,
+    });
+  }, [error]);
 
   return (
     <>
@@ -31,13 +41,6 @@ export default function CollectionDetailsPage() {
             role="status"
           >
             Carregando coleção...
-          </p>
-        ) : error ? (
-          <p
-            className="rounded-2xl bg-surface p-6 text-center text-danger"
-            role="alert"
-          >
-            {error}
           </p>
         ) : collection ? (
           <section className="grid items-start gap-6 md:grid-cols-2 md:gap-10">

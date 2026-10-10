@@ -1,6 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { Button, Card, Input, Label, TextField } from "@heroui/react";
+import { Button, Card, Input, Label, TextField, toast } from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -45,6 +45,14 @@ export default function CollectionEditPage() {
   const [error, setError] = useState<string | null>(null);
   const loading = collectionLoading || updateLoading || deleteLoading;
   const errorMessage = error ?? collectionError ?? updateError ?? deleteError;
+
+  useEffect(() => {
+    if (!errorMessage) return;
+
+    toast.danger("Erro ao editar coleção", {
+      description: errorMessage.toString(),
+    });
+  }, [errorMessage]);
 
   function handleImageClick() {
     fileInputRef.current?.click();
@@ -132,6 +140,7 @@ export default function CollectionEditPage() {
         await imageService.delete(oldIcon);
       }
 
+      toast.success("Coleção editada com sucesso.");
       navigate(`/collections/${collectionId}`);
     } catch (error) {
       setError(
@@ -152,6 +161,7 @@ export default function CollectionEditPage() {
 
       await deleteCollection(collectionId);
 
+      toast.success("Coleção removida com sucesso.");
       navigate("/");
     } catch (error) {
       setError(

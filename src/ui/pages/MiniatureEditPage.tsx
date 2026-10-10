@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Button, Card, Input, Label, TextArea, TextField } from "@heroui/react";
+import {
+  Button,
+  Card,
+  Input,
+  Label,
+  TextArea,
+  TextField,
+  toast,
+} from "@heroui/react";
 
 import PageHeader from "@/ui/components/pageHeader";
 import Fab from "@/ui/components/fab";
@@ -50,6 +58,15 @@ export default function MiniatureEditPage() {
   const loading = miniatureLoading || updateLoading || deleteLoading;
 
   const errorMessage = error ?? miniatureError ?? updateError ?? deleteError;
+
+  useEffect(() => {
+    if (!errorMessage) return;
+
+    toast.danger("Erro ao editar miniatura", {
+      description:
+        typeof errorMessage === "string" ? errorMessage : errorMessage.message,
+    });
+  }, [errorMessage]);
 
   function handleImageClick() {
     fileInputRef.current?.click();
@@ -144,6 +161,7 @@ export default function MiniatureEditPage() {
         },
       });
 
+      toast.success("Miniatura editada com sucesso.");
       navigate(`/collections/${collectionId}/miniatures/${miniatureId}`);
     } catch (error) {
       const normalizedError =
@@ -167,6 +185,7 @@ export default function MiniatureEditPage() {
 
       await deleteMiniature(miniatureId);
 
+      toast.success("Miniatura removida com sucesso.");
       navigate(`/collections/${collectionId}`);
     } catch (error) {
       const normalizedError =

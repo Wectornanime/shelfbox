@@ -1,4 +1,4 @@
-import { Input, TextField, Label, Card } from "@heroui/react";
+import { Input, TextField, Label, Card, toast } from "@heroui/react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 
@@ -46,6 +46,14 @@ export default function CreateMiniaturePage() {
     };
   }, [imagePreview]);
 
+  useEffect(() => {
+    if (!error) return;
+
+    toast.danger("Erro ao cadastrar miniatura", {
+      description: error,
+    });
+  }, [error]);
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -60,6 +68,7 @@ export default function CreateMiniaturePage() {
         image: image ? image : undefined,
       });
 
+      toast.success("Miniatura cadastrada com sucesso");
       navigate(`/collections/${collectionId}`);
     } catch (error) {
       setError(
@@ -132,12 +141,6 @@ export default function CreateMiniaturePage() {
                 <Label>Escala</Label>
                 <Input placeholder="Ex.: 1:64" />
               </TextField>
-
-              {error && (
-                <p className="text-danger" role="alert">
-                  {error}
-                </p>
-              )}
             </form>
           </div>
         </section>

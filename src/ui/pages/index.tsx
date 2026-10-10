@@ -1,5 +1,6 @@
-import { SearchField } from "@heroui/react";
+import { SearchField, toast } from "@heroui/react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import Fab from "@components/fab";
 
 import CollectionCard from "@/ui/components/collections/collectionCard";
@@ -10,6 +11,14 @@ import useCollections from "@/ui/hooks/collections/useCollections";
 export default function IndexPage() {
   const navigate = useNavigate();
   const { collections, loading, error } = useCollections();
+
+  useEffect(() => {
+    if (!error) return;
+
+    toast.danger("Erro ao carregar coleções", {
+      description: error,
+    });
+  }, [error]);
 
   return (
     <>
