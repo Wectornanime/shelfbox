@@ -104,3 +104,4 @@ jobs:
     with:
       environment: production
       ref: main
+    secrets: inherit
