@@ -76,3 +76,4 @@ jobs:
     with:
       environment: dev
       ref: dev
+    secrets: inherit
