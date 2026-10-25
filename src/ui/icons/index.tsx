@@ -13,6 +13,7 @@ export { default as ExpandIcon } from "./ExpandIcon";
 export {
   ArrowLeftIcon as BackIcon,
   CheckCircleIcon,
+  FileExclamationPointIcon as NotFoundIcon,
   HomeIcon,
   InfoIcon,
   PencilIcon as EditIcon,
