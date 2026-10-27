@@ -1,0 +1,45 @@
+name: Sync Branches
+
+on:
+  workflow_call:
+    inputs:
+      source:
+        description: "Source branch"
+        required: true
+        type: string
+      target:
+        description: "Target branch"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.target }}
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync branches
+        env:
+          SOURCE: ${{ inputs.source }}
+          TARGET: ${{ inputs.target }}
+        run: |
+          git fetch origin "$SOURCE" "$TARGET"
+
+          git checkout -B "$TARGET" "origin/$TARGET"
+
+          git merge "origin/$SOURCE" --no-edit
+
+          git push origin "HEAD:$TARGET"
