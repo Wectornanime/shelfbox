@@ -25,5 +25,11 @@ dist-ssr
 
 pnpm-lock.yaml
 yarn.lock
-package-lock.json
 bun.lockb
+
+# Test coverage
+coverage/
+
+# Envs
+.env
+!.env.example

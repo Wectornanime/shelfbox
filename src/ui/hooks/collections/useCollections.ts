@@ -1,0 +1,84 @@
+import { useCallback, useEffect, useState } from "react";
+
+import {
+  createCollectionCase,
+  listCollectionCase,
+} from "@/app/composition/collection";
+import Collection from "@/domain/entities/Collection";
+import { CreateCollection } from "@/domain/models/collection.model";
+import { imageService } from "@/app/composition/imageService";
+
+export default function useCollections() {
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  const loadCollections = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const result = await listCollectionCase.execute();
+
+      setCollections(result);
+    } catch (error) {
+      setError(
+        error instanceof Error
+          ? error
+          : new Error("Failed to load collections."),
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const createCollection = useCallback(
+    async (
+      data: CreateCollection & {
+        image?: File;
+      },
+    ) => {
+      try {
+        setError(null);
+
+        if (data.image) {
+          const path = await imageService.save(data.image);
+
+          data.icon = path;
+        }
+
+        const collection = await createCollectionCase.execute({
+          name: data.name,
+          description: data.description,
+          icon: data.icon,
+        });
+
+        setCollections((current) => [...current, collection]);
+
+        return collection;
+      } catch (error) {
+        const normalizedError =
+          error instanceof Error
+            ? error
+            : new Error("Failed to create collection.");
+
+        setError(normalizedError);
+
+        throw normalizedError;
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    loadCollections();
+  }, [loadCollections]);
+
+  return {
+    collections,
+    loading,
+    error,
+    reload: loadCollections,
+    createCollection,
+  };
+}

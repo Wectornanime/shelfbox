@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.18.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve stable version
+        id: version
+        run: |
+          RAW_VERSION=$(node -p "require('./package.json').version")
+          STABLE_VERSION=$(echo "$RAW_VERSION" | sed -E 's/-dev\.[0-9]+$//')
+
+          echo "Development version: $RAW_VERSION"
+          echo "Stable version: $STABLE_VERSION"
+
+          if git rev-parse "v$STABLE_VERSION" >/dev/null 2>&1; then
+            echo "Tag v$STABLE_VERSION already exists. Skipping release."
+            exit 0
+          fi
+
+          echo "version=$STABLE_VERSION" >> "$GITHUB_OUTPUT"
+          echo "raw_version=$RAW_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Update package version to stable
+        if: steps.version.outputs.version != ''
+        run: |
+          npm version "${{ steps.version.outputs.version }}" --no-git-tag-version
+
+      - name: Generate changelog
+        if: steps.version.outputs.version != ''
+        run: |
+          npx conventional-changelog \
+            -n ./scripts/changelog-preset.mjs \
+            -i CHANGELOG.md \
+            -s \
+            -r 0
+
+      - name: Commit release
+        if: steps.version.outputs.version != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add package.json package-lock.json CHANGELOG.md
+
+          git diff --cached --quiet || \
+            git commit -m "chore(release): v${{ steps.version.outputs.version }} [skip ci]"
+
+          if [ "${ACT:-false}" = "true" ]; then
+            echo "[act] Skipping push to origin/main"
+            exit 0
+          fi
+
+          git push origin main
+
+      - name: Create tag
+        if: steps.version.outputs.version != ''
+        run: |
+          if [ "${ACT:-false}" = "true" ]; then
+            echo "[act] Skipping tag creation/push"
+            exit 0
+          fi
+
+          VERSION="${{ steps.version.outputs.version }}"
+
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${ACT:-false}" = "true" ]; then
+            echo "[act] Skipping GitHub release creation"
+            exit 0
+          fi
+
+          VERSION="${{ steps.version.outputs.version }}"
+
+          gh release create \
+            "v$VERSION" \
+            --title "v$VERSION" \
+            --generate-notes
+
+  deploy-production:
+    needs: release
+    if: needs.release.outputs.version != ''
+    uses: ./.github/workflows/deployment.yml
+    with:
+      environment: production
+      ref: main
+    secrets: inherit
+
+  sync-dev:
+    needs: release
+    if: needs.release.outputs.version != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sync-branches.yml
+    with:
+      source: main
+      target: dev

@@ -27,15 +27,15 @@ Além de ser uma aplicação para gerenciamento de coleções, o projeto busca e
 - Progressive Web Apps (PWA)
 - Persistência local com IndexedDB
 
-## ✨ Funcionalidades planejadas
+## ✨ Funcionalidades
 
 - 📦 Cadastro de miniaturas
-- 🔍 Pesquisa e filtros
-- 🏷️ Organização por categorias
-- ❤️ Favoritos
-- 📷 Imagens
+- 🗂️ Organização por coleções
+- 📷 Imagens das miniaturas
 - 📱 Instalação como aplicativo (PWA)
 - 🌐 Funcionamento offline
+- 🔍 Pesquisa e filtros *(planejado)*
+- ❤️ Favoritos *(planejado)*
 
 > 🚧 Projeto em desenvolvimento — ainda não está pronto para uso em produção.
 
@@ -51,9 +51,19 @@ Além de ser uma aplicação para gerenciamento de coleções, o projeto busca e
 - HeroUI
 - Tailwind CSS
 
-<!-- ### Persistência
+### Persistência
 
-### Futuro
+- Dexie (IndexedDB)
+
+### Qualidade e infraestrutura
+
+- Jest + ts-jest (testes)
+- ESLint + Prettier
+- Husky + lint-staged + git-commit-msg-linter
+- Semantic Release + conventional-changelog
+- GitHub Actions (CI, release e deploy)
+
+<!-- ### Futuro
 
 - Sincronização com Supabase
 - Backup na nuvem -->
@@ -67,7 +77,6 @@ src/
 ├── app/
 ├── domain/
 ├── infrastructure/
-├── shared/
 ├── styles/
 └── ui/
 ```
@@ -96,7 +105,36 @@ npm run dev
 npm run build
 ```
 
+### Testes
+
+```bash
+npm test
+```
+
+### Lint e typecheck
+
+```bash
+npm run lint
+npm run typecheck
+```
+
+### Cobertura
+
+```bash
+npm run test:coverage
+```
+
 ---
+
+## 📝 Changelog
+
+O histórico de versões e alterações do projeto é mantido em [`CHANGELOG.md`](./CHANGELOG.md), gerado automaticamente a partir dos commits seguindo a convenção [Conventional Commits](https://www.conventionalcommits.org/pt-br/). Consulte [`docs/RELEASE_FLOW.md`](./docs/RELEASE_FLOW.md) para o detalhamento do fluxo de releases.
+
+---
+
+## 🤝 Contribuindo
+
+Consulte [`CONTRIBUTING.md`](./CONTRIBUTING.md) para o fluxo de desenvolvimento, convenção de commits e regras de PR.
 
 ## 🎯 Objetivos
 
@@ -116,15 +154,15 @@ npm run build
 - [x] Tailwind CSS
 - [x] Estrutura da arquitetura
 - [x] PWA
-- [ ] Dexie
+- [x] Dexie
 
 ### MVP
 
-- [ ] Cadastro de miniaturas
-- [ ] Listagem
+- [x] Cadastro de miniaturas
+- [x] Listagem
 - [ ] Pesquisa
 - [ ] Favoritos
-- [ ] Imagens
+- [x] Imagens
 
 ### Futuro
 
@@ -135,7 +173,7 @@ npm run build
 
 ### Infraestrutura
 
-- [ ] Persistência local com Dexie
+- [x] Persistência local com Dexie
 - [ ] Sincronização opcional com Supabase
 
 ---
