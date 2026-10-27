@@ -105,3 +105,13 @@ jobs:
       environment: production
       ref: main
     secrets: inherit
+
+  sync-dev:
+    needs: release
+    if: needs.release.outputs.version != ''
+    permissions:
+      contents: write
+    uses: ./.github/workflows/sync.yml
+    with:
+      source: main
+      target: dev
